@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Wikibicho — Wiki + Blog · Pitch</title>
+  <meta name="description" content="Proposta de arquitectura: wiki core + blog satélite. A enciclopédia dos animais em português.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Outfit:wght@300..700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ======================================================
+       WIKIBICHO — Pitch Page · Design System
+       ====================================================== */
+    :root {
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Outfit', system-ui, sans-serif;
+
+      --bg-primary: #FAFAF6;
+      --bg-secondary: #F3F1EC;
+      --surface: #FFFFFF;
+      --surface-hover: #F0EDE6;
+
+      --text-primary: #1A1915;
+      --text-secondary: #57554D;
+      --text-muted: #908E84;
+
+      --accent: #1A9A8B;
+      --accent-hover: #148378;
+      --accent-muted: rgba(26, 154, 139, 0.08);
+      --accent-subtle: rgba(26, 154, 139, 0.04);
+
+      --border: #E4E1D9;
+      --border-subtle: #EDEBE5;
+
+      --green: #22C55E;
+      --yellow: #EAB308;
+      --blue: #3B82F6;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection { background: var(--accent-muted); color: var(--text-primary); }
+
+    /* ============ LAYOUT ============ */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .container-sm { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+    section { padding: 80px 0; }
+    @media (max-width: 640px) { section { padding: 56px 0; } }
+
+    /* ============ TYPOGRAPHY ============ */
+    .display { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    .h1 { font-size: clamp(2.25rem, 5vw + 1rem, 4rem); }
+    .h2 { font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem); line-height: 1.15; }
+    .h3 { font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem); line-height: 1.3; }
+    .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: inline-flex; align-items: center; gap: 8px; }
+    .lead { font-size: clamp(1.0625rem, 0.5vw + 0.95rem, 1.25rem); color: var(--text-secondary); line-height: 1.6; }
+    .muted { color: var(--text-muted); }
+    .accent { color: var(--accent); }
+
+    /* ============ HEADER ============ */
+    header.nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(250, 250, 246, 0.85);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between; height: 64px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 700; font-size: 15px;
+    }
+    .logo-text { font-family: var(--font-display); font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
+    .nav-tag {
+      font-size: 12px; color: var(--text-muted);
+      padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border);
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      position: relative; padding: 96px 0 80px;
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; opacity: 0.4; pointer-events: none;
+      background-image: radial-gradient(circle at 20% 30%, var(--accent-muted) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, var(--accent-subtle) 0%, transparent 50%);
+    }
+    .hero-content { position: relative; }
+    .hero h1 { margin: 0 0 20px; }
+    .hero h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+    .hero .lead { max-width: 640px; }
+
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+    .badge {
+      font-size: 13px; padding: 6px 12px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--border-subtle);
+      color: var(--text-secondary); display: inline-flex; align-items: center; gap: 6px;
+    }
+    .badge-accent { background: var(--accent-muted); border-color: transparent; color: var(--accent); }
+
+    /* ============ STATS ============ */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;
+    }
+    .stat-card {
+      padding: 28px; background: var(--surface); border: 1px solid var(--border-subtle);
+      border-radius: 16px; box-shadow: var(--shadow-card);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .stat-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--accent-muted); color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .stat-number { font-family: var(--font-display); font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1; margin-bottom: 8px; }
+    .stat-label { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ============ SECTIONS ============ */
+    .section-head { margin-bottom: 48px; max-width: 720px; }
+    .section-head .lead { margin: 12px 0 0; }
+
+    /* ============ IDEIA — dual col ============ */
+    .dual {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+    @media (max-width: 768px) { .dual { grid-template-columns: 1fr; } }
+
+    .pillar {
+      padding: 32px; border-radius: 20px; background: var(--surface);
+      border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card);
+      position: relative; overflow: hidden;
+    }
+    .pillar::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: var(--accent);
+    }
+    .pillar-wiki::before { background: linear-gradient(90deg, var(--accent), #2ABFAD); }
+    .pillar-blog::before { background: linear-gradient(90deg, #EAB308, #F59E0B); }
+    .pillar-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .pillar-wiki .pillar-icon { background: var(--accent-muted); color: var(--accent); }
+    .pillar-blog .pillar-icon { background: rgba(234, 179, 8, 0.12); color: #A16207; }
+    .pillar h3 { margin: 0 0 8px; }
+    .pillar p { color: var(--text-secondary); margin: 0 0 20px; }
+    .pillar ul { list-style: none; padding: 0; margin: 0; }
+    .pillar li {
+      position: relative;
+      padding: 8px 0 8px 28px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .pillar li::before {
+      content: ''; position: absolute; left: 0; top: 11px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background-color: var(--accent-muted);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231A9A8B' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-size: 10px; background-position: center; background-repeat: no-repeat;
+    }
+    .pillar-blog li::before {
+      background-color: rgba(234, 179, 8, 0.12);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A16207' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    }
+
+    /* ============ ARCHITECTURE TREE ============ */
+    .tree-wrap {
+      background: var(--surface); border: 1px solid var(--border-subtle);
+      border-radius: 20px; padding: 40px; box-shadow: var(--shadow-card);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      font-size: 14px; line-height: 1.9; overflow-x: auto;
+    }
+    .tree-line { color: var(--text-muted); white-space: nowrap; }
+    .tree-path { color: var(--text-primary); font-weight: 500; }
+    .tree-wiki { color: var(--accent); }
+    .tree-blog { color: #A16207; }
+    .tree-note { color: var(--text-muted); font-style: italic; font-family: var(--font-body); margin-left: 12px; font-size: 13px; }
+
+    /* ============ FLOW DIAGRAM ============ */
+    .flow {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: stretch;
+      margin-top: 32px;
+    }
+    @media (max-width: 768px) { .flow { grid-template-columns: 1fr; gap: 16px; } }
+
+    .flow-box {
+      padding: 24px; border-radius: 16px; background: var(--surface);
+      border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card);
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .flow-box-wiki { border-color: var(--accent-muted); background: linear-gradient(180deg, var(--surface) 0%, var(--accent-subtle) 100%); }
+    .flow-box-blog { border-color: rgba(234, 179, 8, 0.2); background: linear-gradient(180deg, var(--surface) 0%, rgba(234, 179, 8, 0.04) 100%); }
+    .flow-box-head { display: flex; align-items: center; gap: 10px; }
+    .flow-box-head strong { font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+    .flow-box-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; }
+    .tag-wiki { background: var(--accent-muted); color: var(--accent); }
+    .tag-blog { background: rgba(234, 179, 8, 0.12); color: #A16207; }
+    .flow-box ul { list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary); }
+    .flow-box li { padding: 4px 0; display: flex; gap: 6px; }
+    .flow-box li::before { content: '→'; color: var(--text-muted); }
+
+    .flow-arrows {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      color: var(--accent); min-width: 48px;
+    }
+    @media (max-width: 768px) { .flow-arrows { flex-direction: row; } }
+
+    /* ============ ANATOMY MOCKUP ============ */
+    .anatomy {
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px;
+      background: var(--surface); border: 1px solid var(--border-subtle); border-radius: 20px;
+      padding: 32px; box-shadow: var(--shadow-card);
+    }
+    @media (max-width: 900px) { .anatomy { grid-template-columns: 1fr; } }
+
+    .mockup {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; font-size: 13px;
+    }
+    .mockup-bar { height: 28px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 12px; gap: 6px; }
+    .mockup-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+    .mockup-url { margin-left: auto; font-size: 11px; color: var(--text-muted); font-family: ui-monospace, monospace; }
+    .mockup-hero { padding: 20px; background: linear-gradient(135deg, var(--accent-muted), var(--accent-subtle)); }
+    .mockup-hero-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text-primary); margin: 0 0 4px; }
+    .mockup-hero-sub { font-size: 12px; color: var(--text-secondary); margin: 0; }
+    .mockup-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px; background: var(--surface); border-bottom: 1px solid var(--border-subtle); }
+    .mockup-fact { text-align: center; padding: 8px 4px; }
+    .mockup-fact-label { font-size: 9px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+    .mockup-fact-value { font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--accent); }
+    .mockup-body { padding: 16px; display: grid; grid-template-columns: 90px 1fr; gap: 12px; }
+    .mockup-toc { display: flex; flex-direction: column; gap: 6px; }
+    .mockup-toc-item { font-size: 11px; color: var(--text-muted); padding: 4px 8px; border-left: 2px solid var(--border); }
+    .mockup-toc-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-subtle); }
+    .mockup-content-line { height: 6px; background: var(--border-subtle); border-radius: 3px; margin-bottom: 6px; }
+    .mockup-content-line.short { width: 70%; }
+    .mockup-content-h { height: 10px; width: 40%; background: var(--text-primary); border-radius: 3px; margin-bottom: 10px; opacity: 0.7; }
+
+    .anatomy-notes h3 { margin: 0 0 16px; }
+    .anatomy-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+    .anatomy-list li { display: flex; gap: 12px; align-items: flex-start; }
+    .anatomy-num {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      font-size: 12px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+    .anatomy-text strong { display: block; color: var(--text-primary); margin-bottom: 2px; font-size: 14px; }
+    .anatomy-text span { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* ============ REFERENCES ============ */
+    .refs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .ref-card {
+      padding: 24px; background: var(--surface); border: 1px solid var(--border-subtle);
+      border-radius: 16px; text-decoration: none; color: inherit;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; gap: 10px;
+    }
+    .ref-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .ref-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .ref-card-name { font-family: var(--font-display); font-weight: 600; font-size: 18px; color: var(--text-primary); }
+    .ref-card-type { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--bg-secondary); color: var(--text-muted); }
+    .ref-card p { margin: 0; font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+    .ref-card-url { font-size: 12px; color: var(--text-muted); font-family: ui-monospace, monospace; margin-top: auto; padding-top: 8px; display: flex; align-items: center; gap: 6px; }
+    .ref-card:hover .ref-card-url { color: var(--accent); }
+
+    /* ============ TABLE / PROJECTION ============ */
+    .table-wrap {
+      background: var(--surface); border: 1px solid var(--border-subtle);
+      border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-card);
+    }
+    .projection-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .projection-table thead { background: var(--bg-secondary); }
+    .projection-table th {
+      text-align: left; padding: 14px 20px;
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .projection-table td { padding: 16px 20px; border-top: 1px solid var(--border-subtle); color: var(--text-secondary); }
+    .projection-table tr:first-child td { border-top: none; }
+    .projection-table td:first-child { font-family: var(--font-display); font-weight: 600; color: var(--text-primary); }
+    .projection-table td.traffic { color: var(--accent); font-weight: 500; }
+    .projection-table td.revenue { color: var(--text-primary); font-weight: 600; }
+
+    /* ============ STEPS ============ */
+    .steps { display: flex; flex-direction: column; gap: 12px; }
+    .step {
+      display: grid; grid-template-columns: 48px 1fr auto auto; gap: 20px; align-items: center;
+      padding: 20px 24px; background: var(--surface); border: 1px solid var(--border-subtle);
+      border-radius: 16px; box-shadow: var(--shadow-card);
+      transition: all 0.25s;
+    }
+    @media (max-width: 640px) {
+      .step { grid-template-columns: 48px 1fr; }
+      .step-status, .step-when { grid-column: 2; justify-self: start; }
+    }
+    .step:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 10px; background: var(--accent-muted);
+      color: var(--accent); font-family: var(--font-display); font-weight: 600; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-body h4 { margin: 0 0 4px; font-size: 15px; font-weight: 600; color: var(--text-primary); }
+    .step-body p { margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .step-when { font-size: 12px; color: var(--text-muted); white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .step-status {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .step-status::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+    }
+    .status-done { background: rgba(34, 197, 94, 0.1); color: #15803D; }
+    .status-done::before { background: #22C55E; }
+    .status-todo { background: var(--accent-muted); color: var(--accent); }
+    .status-todo::before { background: var(--accent); }
+    .status-ongoing { background: rgba(234, 179, 8, 0.12); color: #A16207; }
+    .status-ongoing::before { background: #EAB308; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* ============ PIPELINE FLOW ============ */
+    .pipeline-wrap {
+      background: var(--surface); border: 1px solid var(--border-subtle);
+      border-radius: 20px; padding: 32px; box-shadow: var(--shadow-card);
+    }
+    .pipeline-head {
+      display: flex; align-items: center; gap: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px; color: var(--text-muted);
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .pipeline-live-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); animation: pulse 2s infinite;
+    }
+    .pipeline-flow {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px 4px;
+    }
+    .pipeline-step {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border-radius: 10px;
+      background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+      font-size: 14px; color: var(--text-primary); font-weight: 500;
+    }
+    .pipeline-step .emoji { font-size: 16px; }
+    .pipeline-arrow {
+      color: var(--text-muted); font-family: ui-monospace, monospace;
+      font-size: 14px; padding: 0 2px;
+    }
+    .pipeline-foot {
+      margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border);
+      display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--text-muted);
+    }
+    .pipeline-foot strong { color: var(--text-primary); font-family: var(--font-display); font-weight: 600; }
+
+    /* ============ FOOTER ============ */
+    footer {
+      margin-top: 40px; padding: 40px 0 60px;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+    }
+    footer p { margin: 4px 0; color: var(--text-muted); font-size: 13px; }
+    footer .accent-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin: 0 8px; vertical-align: middle; }
+
+    /* ============ ANIMATIONS ============ */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; }
+    .reveal.in { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    /* ============ ICONS ============ */
+    .icon { width: 20px; height: 20px; stroke-width: 2; flex-shrink: 0; }
+    .icon-sm { width: 16px; height: 16px; }
+    .icon-lg { width: 24px; height: 24px; }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#top" class="logo">
+        <div class="logo-mark">W</div>
+        <span class="logo-text">Wikibicho</span>
+      </a>
+      <span class="nav-tag">Pitch · Wiki + Blog</span>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="container hero-content">
+      <div class="reveal in">
+        <span class="eyebrow">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          Proposta estratégica
+        </span>
+        <h1 class="display h1">
+          A enciclopédia<br>
+          <em>dos animais</em><br>
+          em português.
+        </h1>
+        <p class="lead" style="margin-top: 24px;">
+          Mudámos o plano do Wikibicho. Em vez de um blog, construímos um
+          <strong style="color: var(--text-primary);">wiki</strong> — com o blog como camada
+          satélite para monetização. É a arquitectura certa para SEO, para escala,
+          e para o nome que já escolhemos.
+        </p>
+        <div class="hero-badges">
+          <span class="badge badge-accent">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Mercado vazio em PT-PT
+          </span>
+          <span class="badge">1.6M pesquisas/mês</span>
+          <span class="badge">2400+ páginas pSEO</span>
+          <span class="badge">Break-even 6-9 meses</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPPORTUNITY / STATS -->
+  <section id="oportunidade">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">01 · A oportunidade</span>
+        <h2 class="display h2">Ninguém fez isto em português.</h2>
+        <p class="lead">
+          A Wikipedia em PT-PT é pobre em animais. Os primeiros resultados do Google vêm de lojas
+          (Tiendanimal) ou sites brasileiros (PeritoAnimal). Não existe um site enciclopédico
+          <strong style="color:var(--text-primary)">neutro, rigoroso e em PT-PT</strong> sobre animais. É um espaço completamente aberto.
+        </p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card reveal">
+          <div class="stat-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
+          <div class="stat-number">1.6M</div>
+          <div class="stat-label">pesquisas mensais endereçáveis em PT (Portugal + Brasil)</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          </div>
+          <div class="stat-number">2 400+</div>
+          <div class="stat-label">páginas programáticas possíveis: raças, espécies, doenças, comparações</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+          </div>
+          <div class="stat-number">€0,02</div>
+          <div class="stat-label">custo por artigo verificado com o pipeline de 4 agentes já construído</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+          </div>
+          <div class="stat-number">RPM €8-15</div>
+          <div class="stat-label">em PT-PT com Mediavine/Raptive (a partir dos 50K sessões/mês)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IDEIA / DUAL PILLARS -->
+  <section id="ideia" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">02 · A ideia</span>
+        <h2 class="display h2">Wiki como base. Blog como extensão.</h2>
+        <p class="lead">
+          Duas camadas complementares. Cada uma captura um tipo diferente de tráfego e cumpre
+          uma função diferente no negócio.
+        </p>
+      </div>
+
+      <div class="dual">
+        <!-- WIKI -->
+        <div class="pillar pillar-wiki reveal">
+          <div class="pillar-icon">
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+          </div>
+          <span class="flow-box-tag tag-wiki" style="display:inline-block; margin-bottom: 12px;">Camada core</span>
+          <h3 class="display">Wiki</h3>
+          <p>Fichas enciclopédicas — sem datas, sempre actuais. O coração do site. É aqui que o tráfego orgânico cresce em escala.</p>
+          <ul>
+            <li>Captura queries de <strong style="color:var(--text-primary)">entidade</strong>: "border collie", "periquito australiano"</li>
+            <li>Evergreen — não fica datado ao longo do tempo</li>
+            <li>Internal linking natural entre raças, espécies, comportamentos</li>
+            <li>Formato ideal para <strong style="color:var(--text-primary)">pSEO programático</strong> (2400+ páginas)</li>
+            <li>Sinaliza autoridade temática ao Google (topical authority)</li>
+          </ul>
+        </div>
+
+        <!-- BLOG -->
+        <div class="pillar pillar-blog reveal">
+          <div class="pillar-icon">
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <span class="flow-box-tag tag-blog" style="display:inline-block; margin-bottom: 12px;">Camada editorial</span>
+          <h3 class="display">Blog</h3>
+          <p>Artigos how-to, sazonais, curiosidades. A porta de entrada para parcerias, branded content e receita directa.</p>
+          <ul>
+            <li>Captura queries <strong style="color:var(--text-primary)">conversacionais</strong>: "como viajar com gato"</li>
+            <li>Permite <strong style="color:var(--text-primary)">branded content</strong> identificado (rações, seguros pet, clínicas)</li>
+            <li>Sazonal — golpe de calor, férias, Natal com animais</li>
+            <li>Canal para newsletters e partilha social</li>
+            <li>Alimenta e recebe tráfego do wiki por internal linking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE TREE -->
+  <section id="arquitectura">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">03 · A arquitectura</span>
+        <h2 class="display h2">Como se vê na estrutura de URLs.</h2>
+        <p class="lead">
+          Duas secções separadas mas interligadas. Os URLs do wiki são estáveis e enciclopédicos;
+          os do blog seguem o padrão editorial comum.
+        </p>
+      </div>
+
+      <div class="tree-wrap reveal">
+<pre style="margin: 0; white-space: pre;"><span class="tree-path">wikibicho.pt</span>
+<span class="tree-line">├──</span> <span class="tree-path">/</span>                                    <span class="tree-note">Homepage · search + categorias em destaque</span>
+<span class="tree-line">│</span>
+<span class="tree-line">├──</span> <span class="tree-wiki">/wiki/</span>                               <span class="tree-note">← camada enciclopédica (core)</span>
+<span class="tree-line">│   ├──</span> <span class="tree-wiki">/racas/[slug]</span>                   <span class="tree-note">fichas de raças de cães e gatos</span>
+<span class="tree-line">│   ├──</span> <span class="tree-wiki">/especies/[slug]</span>                <span class="tree-note">peixes, aves, répteis, roedores</span>
+<span class="tree-line">│   ├──</span> <span class="tree-wiki">/saude/[slug]</span>                   <span class="tree-note">condições médicas e doenças comuns</span>
+<span class="tree-line">│   ├──</span> <span class="tree-wiki">/comportamento/[slug]</span>           <span class="tree-note">ansiedade, agressividade, socialização</span>
+<span class="tree-line">│   └──</span> <span class="tree-wiki">/comparar/[a]-vs-[b]</span>            <span class="tree-note">comparações (SEO gold — baixa KD)</span>
+<span class="tree-line">│</span>
+<span class="tree-line">└──</span> <span class="tree-blog">/blog/</span>                               <span class="tree-note">← camada editorial + monetização</span>
+<span class="tree-line">    ├──</span> <span class="tree-blog">/guias/</span>                          <span class="tree-note">how-to, rotinas, cuidados práticos</span>
+<span class="tree-line">    ├──</span> <span class="tree-blog">/curiosidades/</span>                   <span class="tree-note">conteúdo viral e partilhável</span>
+<span class="tree-line">    ├──</span> <span class="tree-blog">/sazonais/</span>                       <span class="tree-note">verão, férias, natal com animais</span>
+<span class="tree-line">    └──</span> <span class="tree-blog">/patrocinados/</span>                   <span class="tree-note">branded content identificado</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW / INTERNAL LINKING -->
+  <section id="fluxo" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">04 · Como se alimentam</span>
+        <h2 class="display h2">Uma teia, não duas ilhas.</h2>
+        <p class="lead">
+          O wiki manda tráfego para o blog. O blog manda autoridade para o wiki. O Google
+          vê as duas camadas como um só sistema.
+        </p>
+      </div>
+
+      <div class="flow reveal">
+        <div class="flow-box flow-box-wiki">
+          <div class="flow-box-head">
+            <span class="flow-box-tag tag-wiki">Wiki</span>
+            <strong>/wiki/racas/border-collie</strong>
+          </div>
+          <ul>
+            <li>link para guia "Como treinar um Border Collie"</li>
+            <li>link para "Raças similares: Pastor Australiano"</li>
+            <li>link para "Displasia em cães grandes"</li>
+            <li>captura: <strong style="color:var(--text-primary)">"border collie"</strong>, <strong style="color:var(--text-primary)">"raça border collie"</strong></li>
+          </ul>
+        </div>
+
+        <div class="flow-arrows">
+          <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="color: #A16207;"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        </div>
+
+        <div class="flow-box flow-box-blog">
+          <div class="flow-box-head">
+            <span class="flow-box-tag tag-blog">Blog</span>
+            <strong>/blog/guias/treinar-border-collie</strong>
+          </div>
+          <ul>
+            <li>link para ficha wiki "Raça Border Collie"</li>
+            <li>link para ficha wiki "Treino positivo"</li>
+            <li>espaço para patrocínio: rações Taste of the Wild, Royal Canin</li>
+            <li>captura: <strong style="color:var(--text-primary)">"como treinar border collie"</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANATOMY -->
+  <section id="anatomia">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">05 · Anatomia de uma ficha wiki</span>
+        <h2 class="display h2">O que o utilizador vê.</h2>
+        <p class="lead">
+          Cada ficha é auto-contida: factos rápidos no topo, TOC lateral, secções estruturadas
+          que podem ser lidas em ordem ou saltadas. Optimizada para leitura longa e para featured snippets.
+        </p>
+      </div>
+
+      <div class="anatomy reveal">
+        <div class="mockup">
+          <div class="mockup-bar">
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot"></span>
+            <span class="mockup-url">wikibicho.pt/wiki/racas/border-collie</span>
+          </div>
+          <div class="mockup-hero">
+            <p class="mockup-hero-title">Border Collie</p>
+            <p class="mockup-hero-sub">🇬🇧 Reino Unido · Cão de pastoreio · Porte médio</p>
+          </div>
+          <div class="mockup-facts">
+            <div class="mockup-fact">
+              <div class="mockup-fact-label">Tamanho</div>
+              <div class="mockup-fact-value">Médio</div>
+            </div>
+            <div class="mockup-fact">
+              <div class="mockup-fact-label">Energia</div>
+              <div class="mockup-fact-value">Muito alta</div>
+            </div>
+            <div class="mockup-fact">
+              <div class="mockup-fact-label">Vida</div>
+              <div class="mockup-fact-value">12-15 anos</div>
+            </div>
+            <div class="mockup-fact">
+              <div class="mockup-fact-label">Pelagem</div>
+              <div class="mockup-fact-value">Média/longa</div>
+            </div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-toc">
+              <div class="mockup-toc-item active">Resumo</div>
+              <div class="mockup-toc-item">Temperamento</div>
+              <div class="mockup-toc-item">Saúde</div>
+              <div class="mockup-toc-item">Cuidados</div>
+              <div class="mockup-toc-item">História</div>
+              <div class="mockup-toc-item">FAQ</div>
+            </div>
+            <div>
+              <div class="mockup-content-h"></div>
+              <div class="mockup-content-line"></div>
+              <div class="mockup-content-line"></div>
+              <div class="mockup-content-line short"></div>
+              <div style="height: 12px;"></div>
+              <div class="mockup-content-h"></div>
+              <div class="mockup-content-line"></div>
+              <div class="mockup-content-line short"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="anatomy-notes">
+          <h3 class="display">Os ingredientes</h3>
+          <ul class="anatomy-list">
+            <li>
+              <div class="anatomy-num">1</div>
+              <div class="anatomy-text">
+                <strong>Hero com origem</strong>
+                <span>Foto grande + nome + país + grupo. O Google usa isto para rich results.</span>
+              </div>
+            </li>
+            <li>
+              <div class="anatomy-num">2</div>
+              <div class="anatomy-text">
+                <strong>Factos rápidos</strong>
+                <span>4 dados-chave visuais. Captura featured snippets em queries tipo "quanto vive um X".</span>
+              </div>
+            </li>
+            <li>
+              <div class="anatomy-num">3</div>
+              <div class="anatomy-text">
+                <strong>TOC lateral sticky</strong>
+                <span>Navegação em ficha longa. Cada secção é uma âncora — SERPs podem apontar directamente.</span>
+              </div>
+            </li>
+            <li>
+              <div class="anatomy-num">4</div>
+              <div class="anatomy-text">
+                <strong>FAQ schema</strong>
+                <span>Secção final em JSON-LD. Tem aparecido em AI Overviews e em ChatGPT Search.</span>
+              </div>
+            </li>
+            <li>
+              <div class="anatomy-num">5</div>
+              <div class="anatomy-text">
+                <strong>Raças similares + artigos do blog</strong>
+                <span>Teia de internal links. Mantém o utilizador no site e passa autoridade.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section id="referencias" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">06 · Referências</span>
+        <h2 class="display h2">Aprender do que já funciona.</h2>
+        <p class="lead">
+          Não precisamos inventar nada — só cruzar o melhor de cada um. A inspiração directa
+          é uma mistura de AKC (fichas de raças) com TMDB (arquitectura de dados).
+        </p>
+      </div>
+
+      <div class="refs-grid">
+        <a href="https://www.akc.org/dog-breeds/" target="_blank" rel="noopener" class="ref-card reveal">
+          <div class="ref-card-head">
+            <span class="ref-card-name">AKC</span>
+            <span class="ref-card-type">⭐ Referência principal</span>
+          </div>
+          <p>American Kennel Club. Fichas de raças com stats visuais, secções estruturadas, fotos profissionais. O golden standard para fichas de cães.</p>
+          <span class="ref-card-url">akc.org/dog-breeds →</span>
+        </a>
+
+        <a href="https://ebird.org/" target="_blank" rel="noopener" class="ref-card reveal">
+          <div class="ref-card-head">
+            <span class="ref-card-name">eBird</span>
+            <span class="ref-card-type">Científico</span>
+          </div>
+          <p>Cornell Lab. Fichas de aves com mapas de distribuição, sons, fotos. Design clean, científico mas acessível. Modelo de dados estruturados ricos.</p>
+          <span class="ref-card-url">ebird.org →</span>
+        </a>
+
+        <a href="https://www.themoviedb.org/" target="_blank" rel="noopener" class="ref-card reveal">
+          <div class="ref-card-head">
+            <span class="ref-card-name">TMDB</span>
+            <span class="ref-card-type">Arquitectura</span>
+          </div>
+          <p>The Movie Database. Excelente exemplo de ficha rica com múltiplas camadas de dados (elenco, galeria, related). Internal linking exemplar.</p>
+          <span class="ref-card-url">themoviedb.org →</span>
+        </a>
+
+        <a href="https://bulbapedia.bulbagarden.net/" target="_blank" rel="noopener" class="ref-card reveal">
+          <div class="ref-card-head">
+            <span class="ref-card-name">Bulbapedia</span>
+            <span class="ref-card-type">Estrutura</span>
+          </div>
+          <p>Wiki de Pokémon. Design datado mas arquitectura de ficha brutal: infobox à direita, TOC à esquerda, conteúdo denso mas navegável.</p>
+          <span class="ref-card-url">bulbapedia.bulbagarden.net →</span>
+        </a>
+
+        <a href="https://www.allmusic.com/" target="_blank" rel="noopener" class="ref-card reveal">
+          <div class="ref-card-head">
+            <span class="ref-card-name">AllMusic</span>
+            <span class="ref-card-type">Híbrido</span>
+          </div>
+          <p>Wiki de música. Modelo perfeito de como cruzar dados estruturados com editorial. Fichas de artistas, álbuns e géneros ligadas entre si.</p>
+          <span class="ref-card-url">allmusic.com →</span>
+        </a>
+
+        <a href="https://www.thewildest.com/" target="_blank" rel="noopener" class="ref-card reveal">
+          <div class="ref-card-head">
+            <span class="ref-card-name">The Wildest</span>
+            <span class="ref-card-type">Blog side</span>
+          </div>
+          <p>Mars Petcare. A referência para o lado blog — mistura editorial, science-backed e branded content sem parecer publicidade.</p>
+          <span class="ref-card-url">thewildest.com →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section id="pipeline">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">07 · Como o conteúdo é produzido</span>
+        <h2 class="display h2">O pipeline já existe.</h2>
+        <p class="lead">
+          Quatro agentes de IA que trabalham em sequência. Cada ficha passa por descoberta,
+          investigação, escrita e revisão antes de chegar a produção. Já testado: score 100/100, custo €0,02.
+        </p>
+      </div>
+
+      <div class="pipeline-wrap reveal">
+        <div class="pipeline-head">
+          <span class="pipeline-live-dot"></span>
+          Pipeline operacional · 4 agentes · Supabase
+        </div>
+        <div class="pipeline-flow">
+          <span class="pipeline-step"><span class="emoji">🔍</span> Scout</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step"><span class="emoji">📚</span> Journalist</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step"><span class="emoji">✍️</span> Writer</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step"><span class="emoji">🔎</span> Reviewer</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step" style="border-color: var(--accent); background: var(--accent-muted); color: var(--accent);"><span class="emoji">🌐</span> Publicação</span>
+        </div>
+        <div class="pipeline-foot">
+          <span><strong>Scout</strong> · descobre temas com base em keywords e lacunas de cobertura</span>
+          <span><strong>Journalist</strong> · pesquisa fontes (AVMA, WSAVA, DGAV, PetMD, AKC) e constrói dossier</span>
+          <span><strong>Writer</strong> · redige ficha 1000-1500 palavras com regras de segurança animal</span>
+          <span><strong>Reviewer</strong> · verifica claims · score 0-100 · penalização extra por conselho perigoso</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTION -->
+  <section id="projeccao">
+    <div class="container-sm">
+      <div class="section-head reveal">
+        <span class="eyebrow">08 · Projecção de tráfego e receita</span>
+        <h2 class="display h2">O que esperar, realisticamente.</h2>
+        <p class="lead">
+          Baseado no mercado endereçável, RPM PT-PT e cadência de produção viável com o
+          pipeline que já está construído. Break-even realista entre o mês 6 e o mês 9.
+        </p>
+      </div>
+
+      <div class="table-wrap reveal">
+        <table class="projection-table">
+          <thead>
+            <tr>
+              <th>Período</th>
+              <th>Tráfego/mês</th>
+              <th>Receita/mês</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Meses 1-3</td>
+              <td class="traffic">0 — 5K</td>
+              <td class="revenue">€0</td>
+              <td class="muted">Build · indexação inicial</td>
+            </tr>
+            <tr>
+              <td>Meses 4-6</td>
+              <td class="traffic">5K — 30K</td>
+              <td class="revenue">€50 — €300</td>
+              <td class="muted">AdSense liga-se</td>
+            </tr>
+            <tr>
+              <td>Meses 7-12</td>
+              <td class="traffic">30K — 100K</td>
+              <td class="revenue">€300 — €1 500</td>
+              <td class="muted">Branded content começa</td>
+            </tr>
+            <tr>
+              <td>Meses 12-18</td>
+              <td class="traffic">100K — 300K</td>
+              <td class="revenue">€1 500 — €4 000</td>
+              <td class="muted">Mediavine elegível</td>
+            </tr>
+            <tr>
+              <td>Meses 18-24</td>
+              <td class="traffic">300K — 500K</td>
+              <td class="revenue">€2 500 — €6 500</td>
+              <td class="muted">Pleno funcionamento</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT STEPS -->
+  <section id="proximos" style="background: var(--bg-secondary);">
+    <div class="container-sm">
+      <div class="section-head reveal">
+        <span class="eyebrow">09 · Próximos passos</span>
+        <h2 class="display h2">O caminho daqui para produção.</h2>
+        <p class="lead">
+          O pipeline já está construído. O frontend existe em formato blog — é preciso
+          adaptá-lo para wiki. Depois é domínio, deploy e conteúdo.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Adaptar templates wiki</h4>
+            <p>Refactor do frontend existente: rotas /wiki/*, template de ficha com factos rápidos + TOC sticky, schema.org Article + BreadcrumbList + FAQPage.</p>
+          </div>
+          <span class="step-status status-todo">Por fazer</span>
+          <div class="step-when">Semana 1</div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Registar wikibicho.pt + deploy Vercel</h4>
+            <p>Domínio + deploy produção com ISR. Configuração OG images, sitemap, robots, hreflang PT-PT.</p>
+          </div>
+          <span class="step-status status-todo">Por fazer</span>
+          <div class="step-when">Semana 1</div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Ajustar pipeline para conteúdo wiki</h4>
+            <p>O Scout já descobre temas; adaptar o Writer para gerar formato ficha (não artigo). Factos estruturados, não narrativa.</p>
+          </div>
+          <span class="step-status status-todo">Por fazer</span>
+          <div class="step-when">Semana 2</div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Primeiras 50 fichas — raças de cães</h4>
+            <p>Começar pelas 50 raças mais pesquisadas em PT (Labrador, Golden, Border Collie, Bulldog Francês...). Cria momentum inicial e dados para ajustar template.</p>
+          </div>
+          <span class="step-status status-todo">Por fazer</span>
+          <div class="step-when">Semanas 2-3</div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h4>Cadência de produção</h4>
+            <p>3-5 fichas/dia automaticamente + 1 artigo blog/semana editorial. Meta: 300 páginas indexadas ao fim do mês 2.</p>
+          </div>
+          <span class="step-status status-ongoing">Contínuo</span>
+          <div class="step-when">Mês 1+</div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <h4>Backlinks fundacionais</h4>
+            <p>3 backlinks/semana: clínicas veterinárias, associações (APDN, SPC), blogs de criadores. Foco em autoridade temática.</p>
+          </div>
+          <span class="step-status status-ongoing">Contínuo</span>
+          <div class="step-when">Mês 2+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container-sm">
+      <p>
+        <strong style="color: var(--text-primary); font-family: var(--font-display);">Wikibicho</strong>
+        <span class="accent-dot"></span>
+        A enciclopédia dos animais em português
+      </p>
+      <p>Proposta preparada por [a tua empresa] · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal animations on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '-40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>

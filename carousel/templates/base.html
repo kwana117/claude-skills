@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<title>{{BRAND}} · {{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="{{GOOGLE_FONTS_URL}}" rel="stylesheet">
+<style>
+  /*
+   * CAROUSEL BASE CSS — Editorial-minimalist scaffold
+   * Layouts disponíveis:
+   *   L1 (capa) · L2 (quote) · L3 (statement) · L4 (guest) · L5 (cta) · L6 (image + texto)
+   * Variantes opt-in (adicionar classe ao mesmo .slide):
+   *   .l1.has-image      — capa com imagem full-bleed + scrim + eyebrow badge
+   *   .l4.with-image     — guest com portrait top 50% + texto bottom 50%
+   *   .l5 com .platform.youtube/.platform.spotify — CTA com ícones SVG oficiais
+   * Tokens substituídos pelo Executor a partir de brand.json.
+   */
+
+  /* ─── TOKENS (substituir pelos do brand.json) ───────────── */
+  :root {
+    --cream:           {{CREAM | #EDE5D4}};
+    --cream-warmer:    {{CREAM_WARMER | #F2EAD8}};
+    --dark:            {{DARK | #1F1612}};
+    --ink-on-cream:    {{INK_ON_CREAM | #3A2E28}};
+    --ink-on-dark:     {{INK_ON_DARK | #EDE5D4}};
+    --muted-on-cream:  {{MUTED_ON_CREAM | #6B5E4D}};
+    --muted-on-dark:   {{MUTED_ON_DARK | #8A8070}};
+    --gold:            {{GOLD | #C9A84C}};
+    --serif:           {{SERIF_FAMILY | "Cormorant Garamond", Garamond, serif}};
+    --sans:            {{SANS_FAMILY | "DM Sans", system-ui, sans-serif}};
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #2a2826; }
+  body {
+    font-family: var(--sans);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    padding: 40px;
+    display: flex; flex-direction: column;
+    gap: 40px; align-items: center;
+  }
+
+  /* ─── SLIDE BASE ─────────────────────────────────────── */
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 100px 1fr 100px;
+  }
+  .slide.cream { background: var(--cream); color: var(--ink-on-cream); }
+  .slide.dark  { background: var(--dark);  color: var(--ink-on-dark);  }
+
+  /* ─── CHROME TOP ─────────────────────────────────────── */
+  .chrome-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 80px;
+    font-family: var(--sans); font-weight: 400; font-size: 18px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .slide.cream .chrome-top { color: var(--muted-on-cream); }
+  .slide.dark  .chrome-top { color: var(--muted-on-dark); }
+
+  /* ─── CHROME BOTTOM ──────────────────────────────────── */
+  .chrome-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 80px;
+    font-family: var(--sans); font-weight: 400; font-size: 14px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .slide.cream .chrome-bottom { color: var(--muted-on-cream); }
+  .slide.dark  .chrome-bottom { color: var(--muted-on-dark); }
+  .chrome-bottom .org { letter-spacing: 0.22em; font-size: 12px; }
+
+  /* ─── PAGE INDICATOR (dots) ──────────────────────────── */
+  .pages { display: flex; gap: 10px; align-items: center; }
+  .pages .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; opacity: 0.25;
+  }
+  .pages .dot.active { opacity: 1; }
+
+  /* ─── CONTENT REGION ─────────────────────────────────── */
+  .content {
+    padding: 40px 100px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* L1 — CAPA (default: cream + selo top-left + título)     */
+  /* ═══════════════════════════════════════════════════════ */
+  .l1 .content {
+    align-items: flex-start; justify-content: flex-end;
+    padding-bottom: 80px;
+  }
+  .l1 .seal {
+    position: absolute; top: 130px; left: 80px;
+    width: 110px; height: 110px;
+    background-image: url('{{LOGO_PATH}}');
+    background-size: contain; background-repeat: no-repeat; background-position: center;
+  }
+  .l1 .eyebrow {
+    font-family: var(--sans); font-weight: 400; font-size: 18px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted-on-cream); margin-bottom: 32px;
+  }
+  .l1 .title {
+    font-family: var(--serif); font-weight: 400;
+    line-height: 0.95; font-size: 132px; letter-spacing: -0.005em;
+    color: var(--ink-on-cream);
+  }
+  .l1 .title .it { font-style: italic; font-weight: 400; display: block; }
+  .l1 .title .ro { font-style: normal; font-weight: 500; display: block; }
+  .l1 .subtitle {
+    margin-top: 36px;
+    font-family: var(--sans); font-weight: 300; font-size: 24px;
+    color: var(--muted-on-cream); letter-spacing: 0.02em;
+  }
+
+  /* L1 — variante .has-image (full-bleed image + scrim + badge eyebrow) */
+  .l1.has-image { color: var(--ink-on-dark); }
+  .l1.has-image .bg-image {
+    position: absolute; inset: 0;
+    background: url('{{L1_BG_IMAGE_PATH}}') center/cover no-repeat;
+    z-index: 0;
+  }
+  .l1.has-image .bg-image::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(10,8,6,0.30) 0%,
+      rgba(10,8,6,0.10) 30%,
+      rgba(10,8,6,0.40) 60%,
+      rgba(10,8,6,0.88) 100%);
+  }
+  .l1.has-image .chrome-top,
+  .l1.has-image .chrome-bottom,
+  .l1.has-image .content { position: relative; z-index: 2; }
+  .l1.has-image .chrome-top,
+  .l1.has-image .chrome-bottom { color: var(--muted-on-dark); }
+  .l1.has-image .seal { display: none; } /* o selo desaparece — imagem é o hero */
+  .l1.has-image .title { color: var(--ink-on-dark); }
+  .l1.has-image .subtitle { color: var(--ink-on-dark); opacity: 0.92; }
+  /* Badge eyebrow — frosted dark chip pill */
+  .l1.has-image .eyebrow {
+    display: inline-block;
+    background: rgba(15,11,8,0.55);
+    color: var(--ink-on-dark);
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-size: 17px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border: 1px solid rgba(237,229,212,0.22);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    margin-bottom: 36px;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* L2 — QUOTE                                              */
+  /* ═══════════════════════════════════════════════════════ */
+  .l2 .content {
+    align-items: center; justify-content: center; text-align: center;
+    padding: 60px 140px;
+  }
+  .l2 .quote {
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 76px; line-height: 1.18; letter-spacing: -0.005em;
+  }
+  .l2 .quote .ro { font-style: normal; font-weight: 500; }
+  .l2 .quote .it { font-style: italic; font-weight: 400; }
+  .l2 .attribution {
+    margin-top: 56px;
+    font-family: var(--sans); font-weight: 400; font-size: 16px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* L3 — STATEMENT                                          */
+  /* ═══════════════════════════════════════════════════════ */
+  .l3 .content {
+    align-items: flex-start; justify-content: flex-start;
+    padding-top: 60px; padding-bottom: 60px; gap: 0;
+  }
+  .l3 .headline {
+    font-family: var(--serif); line-height: 1.0;
+    font-size: 96px; letter-spacing: -0.01em; margin-bottom: 60px;
+  }
+  .l3 .headline .it { font-style: italic; font-weight: 400; display: block; }
+  .l3 .headline .ro { font-style: normal; font-weight: 500; display: block; }
+  .l3 .body {
+    font-family: var(--sans); font-weight: 300;
+    font-size: 28px; line-height: 1.55; max-width: 800px;
+    opacity: 0.88;
+  }
+  .slide.cream .l3 .body { color: var(--ink-on-cream); }
+  .slide.dark  .l3 .body { color: var(--ink-on-dark); }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* L4 — GUEST (default: text-only)                         */
+  /* ═══════════════════════════════════════════════════════ */
+  .l4 .content {
+    align-items: flex-start; justify-content: center; gap: 28px;
+  }
+  .l4 .label {
+    font-family: var(--sans); font-weight: 400; font-size: 16px;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--muted-on-cream);
+  }
+  .l4 .name {
+    font-family: var(--serif); font-style: italic; font-weight: 500;
+    font-size: 110px; line-height: 1.0; letter-spacing: -0.01em;
+  }
+  .l4 .creds {
+    margin-top: 24px; list-style: none;
+    display: flex; flex-direction: column; gap: 18px; max-width: 760px;
+  }
+  .l4 .creds li {
+    font-family: var(--sans); font-weight: 300;
+    font-size: 26px; line-height: 1.45;
+    padding-left: 28px; position: relative;
+  }
+  .l4 .creds li::before { content: "—"; position: absolute; left: 0; color: var(--gold); }
+
+  /* L4 — variante .with-image (portrait top 50% + texto bottom 50%) */
+  .l4.with-image .content {
+    padding: 0;
+    display: grid;
+    grid-template-rows: 50% 50%;
+    overflow: hidden;
+  }
+  .l4.with-image .portrait {
+    width: 100%; height: 100%;
+    background: url('{{L4_PORTRAIT_PATH}}') center 25%/cover no-repeat;
+  }
+  .l4.with-image .text-area {
+    padding: 44px 100px;
+    display: flex; flex-direction: column;
+    justify-content: center; gap: 18px;
+    background: var(--cream);
+  }
+  .l4.with-image .label { font-size: 14px; letter-spacing: 0.26em; }
+  .l4.with-image .name { font-size: 84px; color: var(--ink-on-cream); }
+  .l4.with-image .creds { margin-top: 10px; gap: 12px; }
+  .l4.with-image .creds li {
+    font-size: 25px; line-height: 1.45;
+    padding-left: 26px; color: var(--ink-on-cream);
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* L5 — CTA                                                */
+  /* ═══════════════════════════════════════════════════════ */
+  .l5 .content { align-items: center; justify-content: center; text-align: center; gap: 0; }
+  .l5 .seal {
+    width: 140px; height: 140px;
+    background-image: url('{{LOGO_PATH}}');
+    background-size: contain; background-repeat: no-repeat; background-position: center;
+    margin-bottom: 48px;
+  }
+  .l5 .cta-headline {
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 64px; line-height: 1.05; color: var(--ink-on-dark);
+    margin-bottom: 14px; max-width: 880px;
+  }
+  .l5 .cta-sub {
+    font-family: var(--sans); font-weight: 300; font-size: 22px;
+    color: var(--muted-on-dark); margin-bottom: 56px; opacity: 0.88;
+  }
+  /* Platforms (YT/Spotify) com ícones SVG oficiais */
+  .l5 .platforms {
+    display: flex; gap: 56px; align-items: center;
+    margin-bottom: 56px;
+  }
+  .l5 .platform {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 14px;
+  }
+  .l5 .platform svg { width: 72px; height: 72px; }
+  .l5 .platform-label {
+    font-family: var(--sans); font-weight: 400; font-size: 18px;
+    letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-on-dark);
+  }
+  .l5 .bio-cta {
+    font-family: var(--sans); font-weight: 300; font-size: 22px;
+    color: var(--muted-on-dark); margin-bottom: 22px;
+    letter-spacing: 0.02em;
+  }
+  .l5 .bio-cta .gold { color: var(--gold); font-weight: 400; }
+  .l5 .handle {
+    font-family: var(--sans); font-weight: 400; font-size: 20px;
+    letter-spacing: 0.18em; color: var(--gold);
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* L6 — IMAGE + TEXT (60/40)                               */
+  /* Uso: tensão/origem/desenvolvimento com suporte visual    */
+  /* ═══════════════════════════════════════════════════════ */
+  .l6 .content {
+    padding: 0;
+    display: grid;
+    grid-template-rows: 60fr 40fr;
+    overflow: hidden;
+  }
+  .l6 .image {
+    width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    position: relative;
+  }
+  .l6 .image::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 65%, rgba(31,22,18,0.18) 100%);
+  }
+  .l6 .text-area {
+    padding: 50px 100px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    background: var(--cream);
+  }
+  .l6 .text-area .headline {
+    font-family: var(--serif); line-height: 1.0;
+    font-size: 68px; letter-spacing: -0.01em;
+    margin-bottom: 22px;
+    color: var(--ink-on-cream);
+  }
+  .l6 .text-area .headline .it { font-style: italic; font-weight: 400; }
+  .l6 .text-area .headline .ro { font-style: normal; font-weight: 500; }
+  .l6 .text-area .body {
+    font-family: var(--sans); font-weight: 300;
+    font-size: 25px; line-height: 1.5;
+    color: var(--ink-on-cream); opacity: 0.85;
+    max-width: 820px;
+  }
+  /* L6 — variante kanji/símbolo com blend multiply para integrar em cream */
+  .l6 .image.symbol-blend {
+    background:
+      url('{{L6_SYMBOL_IMAGE_PATH}}') center/contain no-repeat,
+      var(--cream);
+    background-blend-mode: multiply, normal;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* ÍCONES OFICIAIS (para L5)                                */
+  /* Snippets SVG prontos a colar dentro de .platform:        */
+  /*                                                          */
+  /* YouTube (red rect + white play, fundo transparente):     */
+  /*   <svg viewBox="0 0 24 24">                              */
+  /*     <path fill="#FF0000" d="M23.498 6.186a3.016..."/>    */
+  /*     <path fill="#FFFFFF" d="M9.546 15.568V8.432..."/>    */
+  /*   </svg>                                                 */
+  /*                                                          */
+  /* Spotify (green circle + dark waves):                     */
+  /*   <svg viewBox="0 0 24 24">                              */
+  /*     <circle cx="12" cy="12" r="12" fill="#0E0C0A"/>      */
+  /*     <path fill="#1DB954" d="M12 0C5.4..."/>              */
+  /*   </svg>                                                 */
+  /* Paths completos no SKILL.md.                             */
+  /* ═══════════════════════════════════════════════════════ */
+</style>
+</head>
+<body>
+
+<!-- Slides aqui — gerados pelo Executor com base no plan.json -->
+
+</body>
+</html>

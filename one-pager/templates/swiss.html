@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ======================================================
+       SWISS STYLE — Minimalismo suíço / Dieter Rams / Apple
+       Black on white · massive typography · visible grid · dramatic whitespace
+       ====================================================== */
+    :root {
+      --font-sans: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --bg: #FFFFFF;
+      --bg-alt: #F4F4F4;
+      --ink: #000000;
+      --ink-60: rgba(0, 0, 0, 0.6);
+      --ink-40: rgba(0, 0, 0, 0.4);
+      --ink-20: rgba(0, 0, 0, 0.2);
+      --ink-10: rgba(0, 0, 0, 0.1);
+      --rule: rgba(0, 0, 0, 0.12);
+
+      --col-gutter: 24px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "ss01", "cv01", "cv11";
+      letter-spacing: -0.01em;
+    }
+
+    ::selection { background: var(--ink); color: var(--bg); }
+
+    /* ============ GRID CONTAINER ============ */
+    .container {
+      max-width: 1280px; margin: 0 auto; padding: 0 40px;
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gutter);
+    }
+    .container-tight { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+    @media (max-width: 720px) {
+      .container { grid-template-columns: repeat(6, 1fr); padding: 0 24px; }
+      .container-tight { padding: 0 24px; }
+    }
+
+    /* Column span helpers */
+    .col-full { grid-column: 1 / -1; }
+    .col-7 { grid-column: span 7; }
+    .col-5 { grid-column: span 5; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    .col-8 { grid-column: span 8; }
+    .col-3 { grid-column: span 3; }
+    @media (max-width: 720px) {
+      .col-7, .col-5, .col-6, .col-4, .col-8, .col-3 { grid-column: 1 / -1; }
+    }
+
+    section { padding: 120px 0; border-bottom: 1px solid var(--rule); }
+    @media (max-width: 720px) { section { padding: 80px 0; } }
+
+    /* ============ HEADER ============ */
+    header.nav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--ink);
+      padding: 20px 0;
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    @media (max-width: 720px) { .nav-inner { padding: 0 24px; } }
+    .logo {
+      font-weight: 800; font-size: 14px;
+      text-decoration: none; color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .nav-meta {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--ink-60); letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ============ META STRIP ============ */
+    .meta-strip {
+      padding: 28px 0; border-bottom: 1px solid var(--rule);
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--ink-60); letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .meta-strip span { white-space: nowrap; }
+
+    /* ============ HERO — DRAMATIC ============ */
+    .hero {
+      padding: 200px 0 120px;
+    }
+    @media (max-width: 720px) { .hero { padding: 100px 0 80px; } }
+    .hero-label {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-60); margin-bottom: 40px;
+      grid-column: 1 / -1;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .hero-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--ink-20);
+    }
+    .hero-headline {
+      font-weight: 900;
+      font-size: clamp(3rem, 10vw + 1rem, 10rem);
+      line-height: 0.9;
+      letter-spacing: -0.045em;
+      margin: 0; color: var(--ink);
+      grid-column: 1 / -1;
+    }
+    .hero-headline .soft { color: var(--ink-40); font-weight: 900; }
+    .hero-footer {
+      margin-top: 80px; grid-column: 1 / -1;
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gutter);
+      padding-top: 32px; border-top: 1px solid var(--ink);
+    }
+    @media (max-width: 720px) { .hero-footer { grid-template-columns: repeat(6, 1fr); margin-top: 48px; } }
+    .hero-footer-item { grid-column: span 3; }
+    @media (max-width: 720px) { .hero-footer-item { grid-column: span 3; } }
+    .hero-footer-label {
+      font-family: var(--font-mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--ink-60); margin-bottom: 6px;
+    }
+    .hero-footer-value {
+      font-size: 15px; font-weight: 500; color: var(--ink);
+    }
+
+    /* ============ SECTION TYPOGRAPHY ============ */
+    .section-num {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.14em; color: var(--ink); margin-bottom: 48px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--ink);
+      display: flex; justify-content: space-between;
+    }
+    .section-num strong { font-weight: 700; }
+
+    .big-title {
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin: 0 0 48px;
+      color: var(--ink);
+    }
+    .big-title .soft { color: var(--ink-40); font-weight: 800; }
+
+    .lead {
+      font-size: clamp(1.25rem, 0.5vw + 1.15rem, 1.625rem);
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    /* ============ STATEMENT ============ */
+    .statement {
+      font-size: clamp(2rem, 4vw + 0.5rem, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      font-weight: 500;
+      color: var(--ink);
+      max-width: 980px;
+    }
+    .statement strong { font-weight: 800; }
+
+    /* ============ NUMBERED INDEX ============ */
+    .index {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .index-item {
+      display: grid; grid-template-columns: 80px 1fr 200px; gap: 32px;
+      padding: 40px 0; border-top: 1px solid var(--ink-20);
+      align-items: baseline;
+    }
+    @media (max-width: 720px) {
+      .index-item { grid-template-columns: 60px 1fr; }
+      .index-meta { grid-column: 2; }
+    }
+    .index-item:last-child { border-bottom: 1px solid var(--ink-20); }
+    .index-num {
+      font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .index-title {
+      font-size: clamp(1.25rem, 1vw + 1rem, 1.75rem);
+      font-weight: 600; letter-spacing: -0.02em; line-height: 1.2;
+      color: var(--ink); margin: 0 0 8px;
+    }
+    .index-desc {
+      font-size: 15px; color: var(--ink-60); line-height: 1.5;
+      margin: 0; max-width: 540px;
+    }
+    .index-meta {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-60); text-align: right;
+    }
+    @media (max-width: 720px) { .index-meta { text-align: left; margin-top: 12px; } }
+
+    /* ============ DATA GRID ============ */
+    .data-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--ink);
+    }
+    @media (max-width: 720px) { .data-grid { grid-template-columns: 1fr; } }
+    .data-cell {
+      padding: 40px 28px 40px 0;
+      border-right: 1px solid var(--ink-20);
+      border-bottom: 1px solid var(--ink);
+    }
+    .data-cell:last-child { border-right: none; }
+    .data-cell-label {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-60); margin-bottom: 16px;
+    }
+    .data-cell-value {
+      font-size: clamp(2.5rem, 3vw + 1rem, 4rem);
+      font-weight: 800; letter-spacing: -0.04em;
+      line-height: 0.95; color: var(--ink); margin-bottom: 8px;
+    }
+    .data-cell-desc {
+      font-size: 14px; color: var(--ink-60); line-height: 1.45;
+    }
+
+    /* ============ FLOW ============ */
+    .flow {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0; border: 1px solid var(--ink);
+    }
+    .flow-step {
+      padding: 32px 24px; border-right: 1px solid var(--ink-20);
+      position: relative;
+    }
+    .flow-step:last-child { border-right: none; background: var(--ink); color: var(--bg); }
+    .flow-step:last-child .flow-step-num,
+    .flow-step:last-child .flow-step-label { color: var(--bg); opacity: 0.8; }
+    @media (max-width: 720px) {
+      .flow-step { border-right: none; border-bottom: 1px solid var(--ink-20); }
+      .flow-step:last-child { border-bottom: none; }
+    }
+    .flow-step-num {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.14em; color: var(--ink-60);
+      margin-bottom: 16px;
+    }
+    .flow-step-label {
+      font-size: 18px; font-weight: 600; color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    /* ============ FOOTER ============ */
+    footer {
+      padding: 80px 0; border-bottom: none;
+    }
+    footer .container-tight {
+      display: grid; grid-template-columns: 1fr auto; gap: 40px;
+      align-items: end;
+    }
+    @media (max-width: 720px) { footer .container-tight { grid-template-columns: 1fr; } }
+    .foot-mark {
+      font-size: clamp(3rem, 8vw + 1rem, 7rem);
+      font-weight: 900; letter-spacing: -0.04em; line-height: 0.85;
+      color: var(--ink); margin: 0;
+    }
+    .foot-meta {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-60); text-align: right;
+    }
+    @media (max-width: 720px) { .foot-meta { text-align: left; } }
+    .foot-meta p { margin: 4px 0; }
+
+    /* ============ ANIMATIONS ============ */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; }
+    .reveal.in { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">{{PROJECT}}</a>
+    <span class="nav-meta">{{DATE}} / {{LOCATION}}</span>
+  </div>
+</header>
+
+<div class="container-tight">
+  <div class="meta-strip">
+    <span>{{META_1}}</span>
+    <span>{{META_2}}</span>
+    <span>{{META_3}}</span>
+    <span>Privado</span>
+  </div>
+</div>
+
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-label reveal in">{{KICKER}}</div>
+    <h1 class="hero-headline reveal in">{{HEADLINE_LINE_1}}<br><span class="soft">{{HEADLINE_LINE_2}}</span></h1>
+    <div class="hero-footer reveal in">
+      <div class="hero-footer-item">
+        <div class="hero-footer-label">Autor</div>
+        <div class="hero-footer-value">{{AUTHOR}}</div>
+      </div>
+      <div class="hero-footer-item">
+        <div class="hero-footer-label">Para</div>
+        <div class="hero-footer-value">{{AUDIENCE}}</div>
+      </div>
+      <div class="hero-footer-item">
+        <div class="hero-footer-label">Versão</div>
+        <div class="hero-footer-value">{{VERSION}}</div>
+      </div>
+      <div class="hero-footer-item">
+        <div class="hero-footer-label">Leitura</div>
+        <div class="hero-footer-value">{{READING_TIME}}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="col-full">
+      <div class="section-num"><strong>01 / Tese</strong> <span>{{SECTION_1_META}}</span></div>
+    </div>
+    <div class="col-7 reveal">
+      <h2 class="big-title">{{SECTION_1_TITLE}}</h2>
+    </div>
+    <div class="col-5 reveal">
+      <p class="lead">{{SECTION_1_LEAD}}</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-tight">
+    <div class="section-num"><strong>02 / Declaração</strong> <span>O argumento em uma linha.</span></div>
+    <p class="statement reveal">{{STATEMENT}}</p>
+  </div>
+</section>
+
+<section>
+  <div class="container-tight">
+    <div class="section-num"><strong>03 / Números</strong> <span>Magnitude</span></div>
+    <div class="data-grid reveal">
+      <div class="data-cell">
+        <div class="data-cell-label">{{DATA_1_LABEL}}</div>
+        <div class="data-cell-value">{{DATA_1_VALUE}}</div>
+        <div class="data-cell-desc">{{DATA_1_DESC}}</div>
+      </div>
+      <div class="data-cell">
+        <div class="data-cell-label">{{DATA_2_LABEL}}</div>
+        <div class="data-cell-value">{{DATA_2_VALUE}}</div>
+        <div class="data-cell-desc">{{DATA_2_DESC}}</div>
+      </div>
+      <div class="data-cell">
+        <div class="data-cell-label">{{DATA_3_LABEL}}</div>
+        <div class="data-cell-value">{{DATA_3_VALUE}}</div>
+        <div class="data-cell-desc">{{DATA_3_DESC}}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-tight">
+    <div class="section-num"><strong>04 / Processo</strong> <span>{{FLOW_META}}</span></div>
+    <div class="flow reveal">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-label">{{FLOW_1}}</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-label">{{FLOW_2}}</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-label">{{FLOW_3}}</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <div class="flow-step-label">{{FLOW_4}}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-tight">
+    <div class="section-num"><strong>05 / Caminho</strong> <span>Próximos passos</span></div>
+    <ol class="index reveal">
+      <li class="index-item">
+        <div class="index-num">01</div>
+        <div>
+          <h3 class="index-title">{{STEP_1_TITLE}}</h3>
+          <p class="index-desc">{{STEP_1_DESC}}</p>
+        </div>
+        <div class="index-meta">{{STEP_1_WHEN}}</div>
+      </li>
+      <li class="index-item">
+        <div class="index-num">02</div>
+        <div>
+          <h3 class="index-title">{{STEP_2_TITLE}}</h3>
+          <p class="index-desc">{{STEP_2_DESC}}</p>
+        </div>
+        <div class="index-meta">{{STEP_2_WHEN}}</div>
+      </li>
+      <li class="index-item">
+        <div class="index-num">03</div>
+        <div>
+          <h3 class="index-title">{{STEP_3_TITLE}}</h3>
+          <p class="index-desc">{{STEP_3_DESC}}</p>
+        </div>
+        <div class="index-meta">{{STEP_3_WHEN}}</div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="container-tight">
+    <h2 class="foot-mark">{{PROJECT}}</h2>
+    <div class="foot-meta">
+      <p>{{FOOTER_AUTHOR}}</p>
+      <p>{{FOOTER_META}}</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '-40px 0px' });
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+</body>
+</html>

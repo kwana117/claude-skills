@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Acme App — Sprint Status · 2026-04-16</title>
+<meta name="description" content="Estado dos sprints do Acme App derivados do Council Session 2026-04. O que foi entregue, o que falta testar, o que está bloqueado." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        },
+        colors: {
+          ink: {
+            950: '#070b18',
+            900: '#0b1120',
+            800: '#101728',
+            700: '#1a2236',
+            600: '#2a3454',
+          },
+          cyan: {
+            accent: '#22d3ee',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 0 1px rgba(34,211,238,0.35), 0 0 40px -12px rgba(34,211,238,0.45)',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(34,211,238,0.10), transparent 60%),
+      radial-gradient(900px 500px at 10% 110%, rgba(139,92,246,0.12), transparent 55%),
+      #070b18;
+  }
+  .grain::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none; z-index: 0;
+  }
+  .ring-cyan {
+    box-shadow: inset 0 0 0 1px rgba(34,211,238,0.2);
+  }
+  .chip { font-variant-numeric: tabular-nums; }
+  .hr-dot {
+    background-image: linear-gradient(to right, rgba(148,163,184,0.35) 40%, rgba(255,255,255,0) 0%);
+    background-size: 8px 1px;
+    background-repeat: repeat-x;
+    background-position: left center;
+    height: 1px;
+  }
+  details[open] summary .chev { transform: rotate(90deg); }
+  summary { list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  .flow-arrow::after {
+    content: "→";
+    color: rgba(148,163,184,0.5);
+    margin: 0 0.5rem;
+    font-weight: 600;
+  }
+  .flow-arrow:last-child::after { content: ""; }
+</style>
+</head>
+<body class="grain font-sans text-slate-200 antialiased">
+
+<main class="relative z-10 max-w-6xl mx-auto px-6 py-10 md:py-16">
+
+  <!-- HEADER -->
+  <header class="mb-14">
+    <div class="flex items-center gap-3 text-xs text-slate-400 font-mono mb-6">
+      <span class="inline-flex items-center gap-2">
+        <span class="size-2 rounded-full bg-cyan-accent animate-pulse"></span>
+        LIVE STATUS
+      </span>
+      <span class="opacity-40">·</span>
+      <span>2026-04-16</span>
+      <span class="opacity-40">·</span>
+      <span>derivado do Council Session 2026-04</span>
+    </div>
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] mb-5">
+      Acme App <span class="text-cyan-accent">Sprint Status</span>
+    </h1>
+    <p class="text-slate-300 text-lg md:text-xl max-w-3xl leading-relaxed">
+      Cinco sprints + PR #11 do Jordan entregues. Já temos dados reais na conta do
+      <span class="font-mono text-cyan-accent">@demo_producer</span> — este é o briefing do que
+      foi para produção, o que podes testar já, e o que está bloqueado por keys.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-2 font-mono text-xs">
+      <a href="#sprints" class="px-3 py-1.5 rounded-full bg-ink-800 ring-cyan hover:bg-ink-700 transition">📦 Sprints</a>
+      <a href="#realdata" class="px-3 py-1.5 rounded-full bg-ink-800 ring-cyan hover:bg-ink-700 transition">🎧 Conta real</a>
+      <a href="#dogfood" class="px-3 py-1.5 rounded-full bg-ink-800 ring-cyan hover:bg-ink-700 transition">🧪 Dogfood pendente</a>
+      <a href="#blocked" class="px-3 py-1.5 rounded-full bg-ink-800 ring-cyan hover:bg-ink-700 transition">🔒 Bloqueados</a>
+      <a href="#next" class="px-3 py-1.5 rounded-full bg-ink-800 ring-cyan hover:bg-ink-700 transition">🎯 Next</a>
+    </div>
+  </header>
+
+  <!-- FEATURE HEALTH (CORE LOOP) -->
+  <section class="mb-14">
+    <h2 class="text-sm font-mono uppercase tracking-widest text-slate-400 mb-4">Estado das features</h2>
+    <div class="rounded-2xl bg-ink-900/80 ring-1 ring-white/5 p-6 md:p-8">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <!-- CORE LOOP -->
+        <div class="col-span-2 md:col-span-3 lg:col-span-2 rounded-xl bg-gradient-to-br from-emerald-500/10 to-transparent ring-1 ring-emerald-400/20 p-5">
+          <div class="text-xs font-mono text-emerald-300 uppercase tracking-wider mb-1">✅ Live</div>
+          <div class="text-2xl font-bold text-white">Works &amp; Marketplace</div>
+          <div class="mt-2 text-3xl font-mono text-emerald-300">90%</div>
+          <div class="text-sm text-slate-400 mt-1">CRUD, upload, preview, compra</div>
+        </div>
+        <div class="col-span-2 md:col-span-3 lg:col-span-2 rounded-xl bg-gradient-to-br from-emerald-500/10 to-transparent ring-1 ring-emerald-400/20 p-5">
+          <div class="text-xs font-mono text-emerald-300 uppercase tracking-wider mb-1">✅ Live</div>
+          <div class="text-2xl font-bold text-white">Projectos &amp; Colaboração</div>
+          <div class="mt-2 text-3xl font-mono text-emerald-300">90%</div>
+          <div class="text-sm text-slate-400 mt-1">Feedback timestamped · versões · replies</div>
+        </div>
+        <div class="col-span-2 md:col-span-3 lg:col-span-2 rounded-xl bg-gradient-to-br from-emerald-500/10 to-transparent ring-1 ring-emerald-400/20 p-5">
+          <div class="text-xs font-mono text-emerald-300 uppercase tracking-wider mb-1">✅ Live</div>
+          <div class="text-2xl font-bold text-white">Contratos &amp; Legal</div>
+          <div class="mt-2 text-3xl font-mono text-emerald-300">85%</div>
+          <div class="text-sm text-slate-400 mt-1">Builder + lookup legal automático</div>
+        </div>
+
+        <div class="col-span-2 rounded-xl bg-gradient-to-br from-amber-500/10 to-transparent ring-1 ring-amber-400/25 p-5">
+          <div class="text-xs font-mono text-amber-300 uppercase tracking-wider mb-1">⚡ Parcial</div>
+          <div class="text-lg font-bold text-white">Pagamentos</div>
+          <div class="mt-2 text-2xl font-mono text-amber-300">70%</div>
+          <div class="text-xs text-slate-400 mt-1">paymentsapi integrado · LegacyPay→paymentsapi em falta</div>
+        </div>
+        <div class="col-span-2 rounded-xl bg-gradient-to-br from-amber-500/10 to-transparent ring-1 ring-amber-400/25 p-5">
+          <div class="text-xs font-mono text-amber-300 uppercase tracking-wider mb-1">⏱️ Keys pendentes</div>
+          <div class="text-lg font-bold text-white">Emails &amp; Notifs</div>
+          <div class="mt-2 text-2xl font-mono text-amber-300">60%</div>
+          <div class="text-xs text-slate-400 mt-1">Resend coded · sem API key em prod</div>
+        </div>
+        <div class="col-span-2 rounded-xl bg-gradient-to-br from-amber-500/10 to-transparent ring-1 ring-amber-400/25 p-5">
+          <div class="text-xs font-mono text-amber-300 uppercase tracking-wider mb-1">⏱️ Keys pendentes</div>
+          <div class="text-lg font-bold text-white">Analytics &amp; SEO</div>
+          <div class="mt-2 text-2xl font-mono text-amber-300">65%</div>
+          <div class="text-xs text-slate-400 mt-1">PostHog coded · robots/sitemap/OG live · sem keys</div>
+        </div>
+      </div>
+
+      <!-- flow -->
+      <div class="mt-6 pt-6 border-t border-white/5">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-3">Core loop</div>
+        <div class="flex flex-wrap items-center gap-y-2 text-sm text-slate-300">
+          <span class="flow-arrow">🎹 Producer cria work</span>
+          <span class="flow-arrow">📤 Publica no marketplace</span>
+          <span class="flow-arrow">🛒 Cliente compra via paymentsapi</span>
+          <span class="flow-arrow">💸 Payout split 90/10</span>
+          <span class="flow-arrow">🎧 Projecto colaborativo com feedback</span>
+          <span>🔁 v2/v3</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPRINTS -->
+  <section id="sprints" class="mb-14">
+    <h2 class="text-sm font-mono uppercase tracking-widest text-slate-400 mb-4">Sprints entregues</h2>
+    <div class="space-y-4">
+
+      <!-- SPRINT 1 -->
+      <details class="group rounded-2xl bg-ink-900/80 ring-1 ring-white/5 overflow-hidden">
+        <summary class="cursor-pointer p-5 md:p-6 flex items-center gap-4 hover:bg-ink-800/50 transition">
+          <span class="chev inline-block text-slate-500 transition-transform">▶</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/30">✅ Done</span>
+          <span class="font-mono text-xs text-slate-500">Sprint 1</span>
+          <span class="text-lg font-semibold text-white flex-1">Foundations mudas — Resend, PostHog, E2E</span>
+          <span class="hidden md:inline font-mono text-xs text-slate-500">commit 0010d53</span>
+        </summary>
+        <div class="p-5 md:p-6 pt-0 md:pt-0 border-t border-white/5">
+          <div class="grid md:grid-cols-2 gap-5 pt-5">
+            <div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Entregue</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>4 templates Resend (welcome, contrato assinado, pagamento recebido, project share)</li>
+                <li>5 eventos core PostHog (signup, work_create, work_publish, purchase, project_create)</li>
+                <li>Playwright E2E: webhook LegacyPay completo (5 testes)</li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Council push</div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🎯 Nova</span>
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🏗️ Atlas</span>
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🚀 Flux</span>
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🎨 Pixel</span>
+              </div>
+              <div class="text-xs font-mono text-slate-500 mt-3">
+                lib/email/ · lib/analytics/server.ts · components/providers/AnalyticsProvider.tsx
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- SPRINT 2 -->
+      <details class="group rounded-2xl bg-ink-900/80 ring-1 ring-white/5 overflow-hidden">
+        <summary class="cursor-pointer p-5 md:p-6 flex items-center gap-4 hover:bg-ink-800/50 transition">
+          <span class="chev inline-block text-slate-500 transition-transform">▶</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/30">✅ Done</span>
+          <span class="font-mono text-xs text-slate-500">Sprint 2</span>
+          <span class="text-lg font-semibold text-white flex-1">Cockpit + Onboarding</span>
+          <span class="hidden md:inline font-mono text-xs text-slate-500">commit 2623f88</span>
+        </summary>
+        <div class="p-5 md:p-6 pt-0 border-t border-white/5">
+          <div class="grid md:grid-cols-2 gap-5 pt-5">
+            <div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Entregue</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>ProducerCockpit — dashboard ressuscitado de menu para cockpit</li>
+                <li>OnboardingChecklist 4-step (dismissível)</li>
+                <li>Nav unificada desktop↔mobile</li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Council push</div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🎨 Pixel</span>
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🎯 Nova</span>
+              </div>
+              <div class="text-xs font-mono text-slate-500 mt-3">
+                components/dashboard/ProducerCockpit · OnboardingChecklist
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- SPRINT 3 -->
+      <details class="group rounded-2xl bg-ink-900/80 ring-1 ring-white/5 overflow-hidden">
+        <summary class="cursor-pointer p-5 md:p-6 flex items-center gap-4 hover:bg-ink-800/50 transition">
+          <span class="chev inline-block text-slate-500 transition-transform">▶</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/30">✅ Done</span>
+          <span class="font-mono text-xs text-slate-500">Sprint 3</span>
+          <span class="text-lg font-semibold text-white flex-1">Pivô Stripe → paymentsapi + polish</span>
+          <span class="hidden md:inline font-mono text-xs text-slate-500">commits 363ada5 · 4502c02</span>
+        </summary>
+        <div class="p-5 md:p-6 pt-0 border-t border-white/5">
+          <div class="grid md:grid-cols-2 gap-5 pt-5">
+            <div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Entregue</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>paymentsapi split payouts — fees PT mais baixas, IBAN PT-first</li>
+                <li>Onboarding payouts: IBAN → <span class="font-mono text-amber-300">pending_approval</span> → admin cola externKey → <span class="font-mono text-emerald-300">active</span></li>
+                <li>Platform fee 10% default</li>
+                <li>EmptyStateRich em 4 páginas + mobile metric row fix</li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Council push</div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🎯 Nova</span>
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🏗️ Atlas</span>
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🎨 Pixel</span>
+              </div>
+              <div class="text-xs font-mono text-slate-500 mt-3">
+                lib/paymentsapi/ · components/dashboard/PayoutsOnboarding
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- SPRINT 4 -->
+      <details class="group rounded-2xl bg-ink-900/80 ring-1 ring-white/5 overflow-hidden" open>
+        <summary class="cursor-pointer p-5 md:p-6 flex items-center gap-4 hover:bg-ink-800/50 transition">
+          <span class="chev inline-block text-slate-500 transition-transform">▶</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/30">✅ Done</span>
+          <span class="font-mono text-xs text-slate-500">Sprint 4</span>
+          <span class="text-lg font-semibold text-white flex-1">Timestamped feedback + Admin payouts + SEO</span>
+          <span class="hidden md:inline font-mono text-xs text-slate-500">6a6fe88 → 5161e0f</span>
+        </summary>
+        <div class="p-5 md:p-6 pt-0 border-t border-white/5">
+          <div class="grid md:grid-cols-2 gap-5 pt-5">
+            <div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Entregue</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>Migração <span class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">work_comments</span> com range + resolved</li>
+                <li>WaveformComments resolve/reopen</li>
+                <li>TimestampedFeedback panel nos project views</li>
+                <li>Admin <span class="font-mono">/dashboard/admin/payouts</span> para aprovar produtores</li>
+                <li>SEO pass: robots dinâmico, sitemap, OG metadata, noindex scoped</li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Council push</div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🎵 Rhythm</span>
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🎨 Pixel</span>
+                <span class="text-xs px-2 py-1 rounded-md bg-ink-700 text-slate-300">🚀 Flux</span>
+              </div>
+              <div class="text-xs font-mono text-slate-500 mt-3 leading-relaxed">
+                commits: 6a6fe88 · 7a9fe48 · eebff55 · b7ce56e · a8a84f1 · 5161e0f
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- PR #11 -->
+      <details class="group rounded-2xl bg-ink-900/80 ring-1 ring-purple-400/30 overflow-hidden" open>
+        <summary class="cursor-pointer p-5 md:p-6 flex items-center gap-4 hover:bg-ink-800/50 transition">
+          <span class="chev inline-block text-purple-400 transition-transform">▶</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-300 ring-1 ring-purple-400/40">✅ Merged</span>
+          <span class="font-mono text-xs text-slate-500">PR #11 · Jordan</span>
+          <span class="text-lg font-semibold text-white flex-1">Nav restructure + Artist creation + Dashboard fix</span>
+          <span class="hidden md:inline font-mono text-xs text-slate-500">ed33c6c</span>
+        </summary>
+        <div class="p-5 md:p-6 pt-0 border-t border-white/5">
+          <div class="grid md:grid-cols-2 gap-5 pt-5">
+            <div>
+              <div class="text-xs font-mono text-purple-300 uppercase tracking-widest mb-2">Entregue</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>Nav: "Works" → <b>Tracks</b> (desktop + mobile)</li>
+                <li>Nav: "Projects" consolidado em <b>Artists</b> (producer), matchPaths cobre ambos</li>
+                <li>CreateArtistSheet inline first-project: name + cover + dominant color → redirect para <span class="font-mono text-xs">/projects/:id</span></li>
+                <li>Dashboard fix: <span class="font-mono text-xs">.in(['active'])</span> → <span class="font-mono text-xs">.not('status','in','(completed,archived)')</span></li>
+                <li>Share page: require-account overlay em vez de hard redirect</li>
+                <li>MIME types expandidos (x-wav, x-flac, aiff)</li>
+                <li>MiniPlayer escondido em sandbox mode · deliveryFiles gated em allowDownload</li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-mono text-purple-300 uppercase tracking-widest mb-2">Resolução de conflitos</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>Mantido <b>Sales tab</b> (Sprint 4) que a PR perdia</li>
+                <li>Mantido <b>ProducerCockpit</b> + <b>OnboardingChecklist</b> (Sprint 2)</li>
+                <li>Adoptado só o fix do status filter — works-count filter e notifications query deixados de fora</li>
+                <li>Cleanup de 309 cache files <span class="font-mono text-xs">graphify-out/</span> acidentalmente merged</li>
+                <li><span class="font-mono text-xs">.claude/settings.json</span> do Jordan não foi para main (auto-commit hook era fonte do lixo)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- SPRINT 5 -->
+      <details class="group rounded-2xl bg-ink-900/80 ring-1 ring-cyan-400/30 shadow-glow overflow-hidden" open>
+        <summary class="cursor-pointer p-5 md:p-6 flex items-center gap-4 hover:bg-ink-800/50 transition">
+          <span class="chev inline-block text-cyan-accent transition-transform">▶</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-cyan-400/15 text-cyan-accent ring-1 ring-cyan-400/40">✅ Just shipped</span>
+          <span class="font-mono text-xs text-slate-400">Sprint 5</span>
+          <span class="text-lg font-semibold text-white flex-1">Perfis públicos + Metadata + Range + Versões</span>
+          <span class="hidden md:inline font-mono text-xs text-slate-500">38fd85f → e5eff5a</span>
+        </summary>
+        <div class="p-5 md:p-6 pt-0 border-t border-white/5">
+          <div class="grid md:grid-cols-3 gap-5 pt-5">
+
+            <div class="rounded-xl bg-ink-800/60 ring-1 ring-white/5 p-4">
+              <div class="text-xs font-mono text-cyan-accent uppercase tracking-widest mb-2">Opção B · Growth 🚀</div>
+              <div class="font-semibold text-white mb-2">Perfis públicos de produtor</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>JSON-LD Person + MusicGroup com works como MusicRecording</li>
+                <li>OG image dinâmica 1200×630 (gradient + nome + bio + work count)</li>
+                <li>Header polish: gradient bg, avatar 144px, "PRODUCER" kicker</li>
+                <li>Canonical URL + og:type=profile + twitter summary_large_image</li>
+              </ul>
+            </div>
+
+            <div class="rounded-xl bg-ink-800/60 ring-1 ring-white/5 p-4">
+              <div class="text-xs font-mono text-cyan-accent uppercase tracking-widest mb-2">Opção A · Metadata 🎵</div>
+              <div class="font-semibold text-white mb-2">ISRC + Sample Rate + Technical Specs</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>Migration <span class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">works.isrc</span> + unique index upper-case</li>
+                <li>WorkForm: ISRC input + sample rate select (44.1/48/88.2/96/192 kHz)</li>
+                <li>Componente <span class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">TechnicalSpecs</span> em producer + marketplace</li>
+                <li>ISRC canonical <span class="font-mono">CC-XXX-YY-NNNNN</span></li>
+              </ul>
+            </div>
+
+            <div class="rounded-xl bg-ink-800/60 ring-1 ring-white/5 p-4">
+              <div class="text-xs font-mono text-cyan-accent uppercase tracking-widest mb-2">Opção A · Range + Replies 💬</div>
+              <div class="font-semibold text-white mb-2">Feedback escopado</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>Range UI: <kbd class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">shift+click</kbd> no waveform define range end</li>
+                <li>Display <span class="font-mono">start → end</span> em popover + panel</li>
+                <li>Replies threaded: <span class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">parent_comment_id</span> + indent + border</li>
+              </ul>
+            </div>
+
+            <div class="rounded-xl bg-ink-800/60 ring-1 ring-white/5 p-4 md:col-span-2">
+              <div class="text-xs font-mono text-cyan-accent uppercase tracking-widest mb-2">Opção A · Versões 🔁</div>
+              <div class="font-semibold text-white mb-2">Versionamento de tracks</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li><span class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">WorkVersions</span> server component lista chain (root + siblings por <span class="font-mono text-xs">parent_work_id</span>)</li>
+                <li>Highlight current + link para cada versão</li>
+                <li><span class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">createWorkVersion</span> duplica work com version+1 e redirect para edit</li>
+              </ul>
+              <div class="mt-3 text-xs font-mono text-amber-300">⚠️ Compare side-by-side (waveform diff) adiado</div>
+            </div>
+
+            <div class="rounded-xl bg-ink-800/60 ring-1 ring-white/5 p-4">
+              <div class="text-xs font-mono text-cyan-accent uppercase tracking-widest mb-2">Ops 🛠️</div>
+              <div class="font-semibold text-white mb-2">Cleanup + deploy</div>
+              <ul class="space-y-1.5 text-sm text-slate-300">
+                <li>Council artefactos removidos</li>
+                <li>Docs colaboração movidos para <span class="font-mono text-xs">/docs</span></li>
+                <li>Deploy no servidor via pm2 reload · 200 OK</li>
+                <li>Smoke-check SEO em produção OK</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- REAL DATA -->
+  <section id="realdata" class="mb-14">
+    <h2 class="text-sm font-mono uppercase tracking-widest text-slate-400 mb-4">🎧 Conta real — dados populados</h2>
+    <div class="rounded-2xl bg-gradient-to-br from-cyan-400/10 via-transparent to-emerald-500/10 ring-1 ring-cyan-400/30 p-6 md:p-8">
+      <div class="flex flex-wrap items-start gap-5 mb-6">
+        <div>
+          <div class="text-xs font-mono text-cyan-accent uppercase tracking-widest mb-1">Producer</div>
+          <div class="text-2xl font-bold text-white">Demo Producer · <span class="font-mono text-cyan-accent">@demo_producer</span></div>
+          <div class="text-sm text-slate-400 mt-1">
+            <span class="font-mono">producer@example.com</span> · verificado · desde Fev 2026
+          </div>
+        </div>
+        <div class="ml-auto">
+          <a href="https://<your-host>/producers/demo-producer" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-accent text-ink-950 font-semibold text-sm hover:bg-cyan-300 transition">
+            Abrir perfil público →
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div class="rounded-xl bg-ink-800/70 ring-1 ring-white/5 p-4">
+          <div class="text-3xl font-mono font-bold text-white">6</div>
+          <div class="text-xs text-slate-400 mt-1">Works totais</div>
+        </div>
+        <div class="rounded-xl bg-ink-800/70 ring-1 ring-white/5 p-4">
+          <div class="text-3xl font-mono font-bold text-white">2</div>
+          <div class="text-xs text-slate-400 mt-1">Projectos</div>
+        </div>
+        <div class="rounded-xl bg-ink-800/70 ring-1 ring-white/5 p-4">
+          <div class="text-3xl font-mono font-bold text-white">2</div>
+          <div class="text-xs text-slate-400 mt-1">Artistas</div>
+        </div>
+        <div class="rounded-xl bg-ink-800/70 ring-1 ring-white/5 p-4">
+          <div class="text-3xl font-mono font-bold text-white">1</div>
+          <div class="text-xs text-slate-400 mt-1">Contrato</div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5">
+        <div>
+          <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Works por status</div>
+          <ul class="space-y-1.5 text-sm text-slate-300">
+            <li><span class="inline-block w-3 h-3 rounded-full bg-slate-500 mr-2"></span>3 · <span class="font-mono text-xs">draft</span></li>
+            <li><span class="inline-block w-3 h-3 rounded-full bg-amber-400 mr-2"></span>2 · <span class="font-mono text-xs">awaiting_payment</span></li>
+            <li><span class="inline-block w-3 h-3 rounded-full bg-cyan-accent mr-2"></span>1 · <span class="font-mono text-xs">in_production</span></li>
+            <li class="pt-2 text-slate-500 text-xs">Artistas: <span class="text-slate-300">Aurora</span> (5 works) · <span class="text-slate-300">nightcoast</span> (1 work)</li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-2">Projectos</div>
+          <ul class="space-y-2 text-sm text-slate-300">
+            <li class="p-2 rounded-lg bg-ink-800/60">
+              <div class="font-semibold text-white">Aurora — Reflexo</div>
+              <div class="text-xs text-slate-400 font-mono">active · EP · artist ✓</div>
+            </li>
+            <li class="p-2 rounded-lg bg-ink-800/60">
+              <div class="font-semibold text-white">With U</div>
+              <div class="text-xs text-slate-400 font-mono">inactive · cover ✓ · artist ✓</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-5 border-t border-white/5 grid md:grid-cols-3 gap-3 text-sm">
+        <div class="flex items-center gap-2"><span class="text-amber-300">⚠</span> <span class="text-slate-300">0 comentários timestamped ainda</span></div>
+        <div class="flex items-center gap-2"><span class="text-amber-300">⚠</span> <span class="text-slate-300">0 works no marketplace</span></div>
+        <div class="flex items-center gap-2"><span class="text-amber-300">⚠</span> <span class="text-slate-300">0 payouts configurados</span></div>
+        <div class="flex items-center gap-2"><span class="text-amber-300">⚠</span> <span class="text-slate-300">BPM / Key / ISRC / Sample rate vazios</span></div>
+        <div class="flex items-center gap-2"><span class="text-amber-300">⚠</span> <span class="text-slate-300">Todas as versões em v1 (sem chain)</span></div>
+        <div class="flex items-center gap-2"><span class="text-emerald-400">✓</span> <span class="text-slate-300">Cockpit + project list têm dados reais</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOGFOOD -->
+  <section id="dogfood" class="mb-14">
+    <h2 class="text-sm font-mono uppercase tracking-widest text-slate-400 mb-4">🧪 Dogfood — o que já podes testar</h2>
+    <div class="rounded-2xl bg-ink-900/80 ring-1 ring-emerald-400/20 p-6 md:p-8">
+      <p class="text-sm text-slate-300 mb-5 max-w-2xl leading-relaxed">
+        Login como <span class="font-mono text-cyan-accent">producer@example.com</span>.
+        Destes, alguns validam features <em>passivamente</em> (vês se renderiza com dados reais),
+        outros precisam de tu <em>criares</em> conteúdo para validar o flow.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <div>
+          <div class="text-xs font-mono text-emerald-300 uppercase tracking-widest mb-3">✓ Validar renderização (já tem dados)</div>
+          <ul class="space-y-3">
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-emerald-400/15">
+              <span class="text-emerald-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Producer Cockpit</div>
+                <div class="text-sm text-slate-400">Devem aparecer 6 works, 2 projectos, 2 artistas, 1 contrato. KPIs não devem estar a zero.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-emerald-400/15">
+              <span class="text-emerald-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Projects list (Sprint 5 fix)</div>
+                <div class="text-sm text-slate-400">Devem aparecer <em>ambos</em> os projectos (active + inactive) — o fix do status filter entrou no PR #11.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-emerald-400/15">
+              <span class="text-emerald-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Artists list + drill-down</div>
+                <div class="text-sm text-slate-400">Aurora (com 5 works) + nightcoast (com 1). Click → <span class="font-mono text-xs">/dashboard/producer/artists/:id</span>.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-emerald-400/15">
+              <span class="text-emerald-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Perfil público</div>
+                <div class="text-sm text-slate-400">
+                  <a href="https://<your-host>/producers/demo-producer" target="_blank" rel="noopener" class="text-cyan-accent underline"><your-host>/producers/demo-producer</a>
+                  — JSON-LD Person+MusicGroup, OG image, canonical URL
+                </div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-emerald-400/15">
+              <span class="text-emerald-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Nav restructure (PR #11)</div>
+                <div class="text-sm text-slate-400">Desktop &amp; mobile: Works → <b>Tracks</b>, Projects → <b>Artists</b> (producer). Sales tab mantido.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-xs font-mono text-amber-300 uppercase tracking-widest mb-3">⚡ Criar conteúdo para validar flow</div>
+          <ul class="space-y-3">
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-amber-400/20">
+              <span class="text-amber-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Timestamped comments</div>
+                <div class="text-sm text-slate-400">Abrir "Aurora — Reflexo", escolher um track, deixar comentário ancorado a um timestamp. Depois resolver / reabrir.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-amber-400/20">
+              <span class="text-amber-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Range comment</div>
+                <div class="text-sm text-slate-400"><kbd class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">shift+click</kbd> no waveform após ter um comentário para definir range end.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-amber-400/20">
+              <span class="text-amber-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Reply threaded</div>
+                <div class="text-sm text-slate-400">No painel TimestampedFeedback: botão reply → thread nested com indent.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-amber-400/20">
+              <span class="text-amber-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Versionamento (v2)</div>
+                <div class="text-sm text-slate-400">Numa work existente (ex: "Aurora - DNB"), botão <em>New Version</em> → duplica com version+1 e redirect para edit.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-amber-400/20">
+              <span class="text-amber-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Technical Specs display</div>
+                <div class="text-sm text-slate-400">Editar uma work, preencher BPM, Key, ISRC (formato CC-XXX-YY-NNNNN), Sample Rate. Guardar e ver o painel <span class="font-mono text-xs">TechnicalSpecs</span> no detail.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-amber-400/20">
+              <span class="text-amber-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Artist creation flow (PR #11)</div>
+                <div class="text-sm text-slate-400">Criar novo artista → CreateArtistSheet pede logo primeiro projecto com cover e dominant color → redirect para <span class="font-mono text-xs">/projects/:id</span>.</div>
+              </div>
+            </li>
+            <li class="flex gap-3 p-4 rounded-xl bg-ink-800/60 ring-1 ring-amber-400/20">
+              <span class="text-amber-300 font-mono text-xs mt-0.5">☐</span>
+              <div>
+                <div class="font-semibold text-white">Payout onboarding</div>
+                <div class="text-sm text-slate-400">Submeter IBAN PT → cria pedido <span class="font-mono text-xs text-amber-300">pending_approval</span> → só aí o admin tem algo para aprovar.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCKED -->
+  <section id="blocked" class="mb-14">
+    <h2 class="text-sm font-mono uppercase tracking-widest text-slate-400 mb-4">🔒 Bloqueados — precisam de keys</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+
+      <!-- paymentsapi -->
+      <div class="rounded-2xl bg-gradient-to-br from-rose-500/10 to-transparent ring-1 ring-rose-400/30 p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="size-2 rounded-full bg-rose-400"></span>
+          <span class="text-xs font-mono text-rose-300 uppercase tracking-widest">Crítico</span>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Configurar paymentsapi em produção</h3>
+        <p class="text-sm text-slate-300 mb-4">
+          No servidor — <span class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">&lt;webroot&gt;/acme_app/.env.local</span>
+        </p>
+        <ul class="space-y-1.5 text-sm font-mono">
+          <li class="text-slate-300">PAYMENT_API_KEY</li>
+          <li class="text-slate-300">PAYMENT_WEBHOOK_SECRET</li>
+          <li class="text-slate-300">PAYMENT_PLATFORM_KEY</li>
+          <li class="text-slate-300">PAYMENT_MODE <span class="text-slate-500">· sandbox | production</span></li>
+        </ul>
+        <div class="mt-4 text-xs text-slate-400 border-t border-white/5 pt-3">
+          Prod é self-hosted via PM2 <span class="font-mono text-slate-300">acme-app</span>.
+        </div>
+      </div>
+
+      <!-- legacypay migration -->
+      <div class="rounded-2xl bg-gradient-to-br from-rose-500/10 to-transparent ring-1 ring-rose-400/30 p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="size-2 rounded-full bg-rose-400"></span>
+          <span class="text-xs font-mono text-rose-300 uppercase tracking-widest">Crítico</span>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Migrar LegacyPay → paymentsapi</h3>
+        <p class="text-sm text-slate-300 mb-4 leading-relaxed">
+          <span class="font-mono text-xs bg-ink-700 px-1.5 py-0.5 rounded">app/api/payments/create/route.ts</span>
+          ainda importa <span class="font-mono text-xs">createPayment</span> de <span class="font-mono text-xs">@/lib/legacypay</span>
+          para marketplace purchases.
+        </p>
+        <ul class="space-y-1.5 text-sm text-slate-300">
+          <li>Project-payments já usa paymentsapi ✓</li>
+          <li>Marketplace purchases ainda no LegacyPay ✗</li>
+          <li>Bloqueado sem PAYMENT_API_KEY para testar</li>
+        </ul>
+      </div>
+
+      <!-- resend -->
+      <div class="rounded-2xl bg-gradient-to-br from-amber-500/10 to-transparent ring-1 ring-amber-400/30 p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="size-2 rounded-full bg-amber-400"></span>
+          <span class="text-xs font-mono text-amber-300 uppercase tracking-widest">Importante</span>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Resend — notificações email</h3>
+        <p class="text-sm text-slate-300 mb-4">Desbloqueia emails de feedback comment + reply.</p>
+        <ul class="space-y-1.5 text-sm font-mono">
+          <li class="text-slate-300">RESEND_API_KEY</li>
+          <li class="text-slate-300">RESEND_FROM_EMAIL</li>
+        </ul>
+      </div>
+
+      <!-- posthog -->
+      <div class="rounded-2xl bg-gradient-to-br from-amber-500/10 to-transparent ring-1 ring-amber-400/30 p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="size-2 rounded-full bg-amber-400"></span>
+          <span class="text-xs font-mono text-amber-300 uppercase tracking-widest">Importante</span>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">PostHog — analytics</h3>
+        <p class="text-sm text-slate-300 mb-4">Eventos já estão coded, falta flush para a plataforma EU.</p>
+        <ul class="space-y-1.5 text-sm font-mono">
+          <li class="text-slate-300">NEXT_PUBLIC_POSTHOG_KEY</li>
+          <li class="text-slate-300">NEXT_PUBLIC_POSTHOG_HOST <span class="text-slate-500">· https://eu.i.posthog.com</span></li>
+        </ul>
+      </div>
+
+      <!-- adiado -->
+      <div class="md:col-span-2 rounded-2xl bg-ink-900/60 ring-1 ring-purple-400/25 p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="size-2 rounded-full bg-purple-400"></span>
+          <span class="text-xs font-mono text-purple-300 uppercase tracking-widest">Adiado · sprint-size</span>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Compare UI side-by-side (waveform diff)</h3>
+        <p class="text-sm text-slate-300">
+          Não bloqueia produção. Faz sentido depois de ter utilizadores reais a pedir comparar versões.
+          Rhythm tem isto como "nice to have" — não killer.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NEXT STEPS -->
+  <section id="next" class="mb-14">
+    <h2 class="text-sm font-mono uppercase tracking-widest text-slate-400 mb-4">🎯 Próximo</h2>
+    <div class="rounded-2xl bg-gradient-to-br from-cyan-400/10 via-transparent to-purple-500/10 ring-1 ring-cyan-400/30 p-6 md:p-8">
+      <ol class="space-y-4 text-slate-200">
+        <li class="flex gap-4">
+          <span class="shrink-0 size-7 rounded-full bg-cyan-accent text-ink-950 font-mono font-bold text-sm grid place-items-center">1</span>
+          <div>
+            <div class="font-semibold text-white">Conseguir keys paymentsapi</div>
+            <div class="text-sm text-slate-300 mt-1">Sandbox primeiro para desbloquear smoke-test, depois produção. Sem isto, o refactor LegacyPay→paymentsapi fica parado.</div>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <span class="shrink-0 size-7 rounded-full bg-cyan-accent text-ink-950 font-mono font-bold text-sm grid place-items-center">2</span>
+          <div>
+            <div class="font-semibold text-white">Dogfood em browser</div>
+            <div class="text-sm text-slate-300 mt-1">Seed 2-3 works reais no demo producer para validar feedback timestamped, versionamento e perfil público.</div>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <span class="shrink-0 size-7 rounded-full bg-cyan-accent text-ink-950 font-mono font-bold text-sm grid place-items-center">3</span>
+          <div>
+            <div class="font-semibold text-white">Resend + PostHog em prod</div>
+            <div class="text-sm text-slate-300 mt-1">Keys. 2 minutos de config. Desbloqueia visibilidade total do produto.</div>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <span class="shrink-0 size-7 rounded-full bg-cyan-accent text-ink-950 font-mono font-bold text-sm grid place-items-center">4</span>
+          <div>
+            <div class="font-semibold text-white">Refactor LegacyPay → paymentsapi em marketplace</div>
+            <div class="text-sm text-slate-300 mt-1">Depois de paymentsapi sandbox validar. Não é grande refactor — só trocar import + endpoint.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="pt-10 mt-10 border-t border-white/5 text-xs font-mono text-slate-500 flex flex-wrap gap-4 justify-between">
+    <div>Acme App MVP · Sprint Status · actualizado 2026-04-16 com dados reais do @demo_producer</div>
+    <div class="flex gap-4">
+      <span>5 sprints + PR #11 · 43 tabelas · 77 migrações</span>
+      <span class="opacity-60">·</span>
+      <span>council: Nova · Pixel · Atlas · Rhythm · Flux</span>
+    </div>
+  </footer>
+
+</main>
+
+</body>
+</html>

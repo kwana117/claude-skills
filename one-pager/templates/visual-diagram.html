@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>James + Pinhas — Plano IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F5F0E8;
+    --bg-2: #EDE7DD;
+    --bg-gold: #FFF3D0;
+    --surface: #FAF7F2;
+    --white: #FFFFFF;
+    --border: #E0D9CF;
+    --text: #2D2A26;
+    --text-2: #5C5650;
+    --muted: #9C958E;
+    --accent: #FFA51F;
+    --accent-deep: #E89505;
+    --accent-bright: #FFC71F;
+    --accent-soft: rgba(255, 165, 31, 0.10);
+    --accent-warm: #FAD48C;
+    --dark: #1A1A1A;
+    --green: #4F9D5C;
+    --red: #C85A3A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Ubuntu', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+  ::selection { background: var(--accent); color: var(--dark); }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+  .gradient {
+    background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent-deep) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hl {
+    background-image: linear-gradient(to top, var(--accent-soft) 45%, transparent 45%);
+    padding: 0 3px;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    padding: 64px 0 48px;
+    background: linear-gradient(180deg, var(--bg-gold) 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+    background: var(--white);
+    border: 1px solid var(--accent-warm);
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  .badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+
+  h1 {
+    font-size: clamp(32px, 7vw, 48px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 17px;
+    color: var(--text-2);
+    max-width: 560px;
+  }
+  .hero p strong { color: var(--text); font-weight: 500; }
+
+  .pair {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 24px 0 0;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-2);
+  }
+  .pair .icon { color: var(--accent-deep); }
+  .pair strong { color: var(--text); font-weight: 500; }
+
+  /* ============ SECTIONS ============ */
+  section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+    margin-bottom: 8px;
+  }
+  .eyebrow .line { flex: 0 0 28px; height: 1px; background: var(--accent); }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin-bottom: 28px;
+  }
+  h2 .gradient { display: inline; }
+
+  /* ============ ICON BLOCK ============ */
+  .ico {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ico svg { width: 22px; height: 22px; stroke-width: 2; }
+  .ico.solid { background: var(--accent); color: var(--dark); }
+  .ico.dark { background: var(--dark); color: var(--accent-bright); }
+  .ico.green { background: rgba(79, 157, 92, 0.12); color: var(--green); }
+  .ico.red { background: rgba(200, 90, 58, 0.10); color: var(--red); }
+
+  /* ============ TILES ============ */
+  .tiles { display: grid; gap: 12px; }
+  .tile {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .tile .body { flex: 1; min-width: 0; }
+  .tile h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .tile p {
+    font-size: 14px;
+    color: var(--text-2);
+    margin: 0;
+    line-height: 1.45;
+  }
+  .tile p + p { margin-top: 6px; }
+  .tile strong { color: var(--text); font-weight: 500; }
+  .tile.warm { background: var(--bg-gold); border-color: var(--accent-warm); }
+  .tile.dim { opacity: 0.65; background: var(--surface); }
+  .tile.dark { background: var(--dark); border-color: var(--dark); }
+  .tile.dark h3 { color: var(--bg-gold); }
+  .tile.dark p { color: #B5ADA0; }
+  .tile.dark strong { color: var(--accent-bright); }
+
+  /* ============ FUNNEL ============ */
+  .funnel { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+  .funnel-row {
+    display: flex;
+    align-items: stretch;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .funnel-row .verdict {
+    flex-shrink: 0;
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .funnel-row .verdict.no { background: rgba(200, 90, 58, 0.10); color: var(--red); }
+  .funnel-row .verdict.yes { background: rgba(79, 157, 92, 0.14); color: var(--green); }
+  .funnel-row .content { padding: 14px 16px; flex: 1; }
+  .funnel-row .label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 4px; }
+  .funnel-row h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .funnel-row p { font-size: 13px; color: var(--text-2); margin: 0; line-height: 1.45; }
+  .funnel-row.target { border-color: var(--accent); background: var(--bg-gold); box-shadow: 0 4px 16px var(--accent-soft); }
+  .funnel-row.target .content { padding: 18px 16px; }
+  .funnel-row.target h3 { font-size: 17px; font-weight: 700; }
+
+  /* ============ TWO-COL ============ */
+  .duo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 640px) { .duo { grid-template-columns: 1fr 1fr; } }
+  .duo .tile { flex-direction: column; }
+  .duo .tile .ico { margin-bottom: 4px; }
+
+  /* ============ FILTER BARS ============ */
+  .filter {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .filter-row:last-child { border-bottom: none; }
+  .filter-row .check {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .filter-row .check.no { background: rgba(200, 90, 58, 0.12); color: var(--red); }
+  .filter-row .check.yes { background: rgba(79, 157, 92, 0.16); color: var(--green); }
+  .filter-row .label { flex: 1; color: var(--text); }
+  .filter-row .verdict { font-size: 12px; font-weight: 500; }
+  .filter-row .verdict.no { color: var(--red); }
+  .filter-row .verdict.yes { color: var(--green); }
+
+  /* ============ STEPS ============ */
+  .steps { display: flex; flex-direction: column; }
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 16px 0;
+    position: relative;
+  }
+  .step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 50px;
+    bottom: -8px;
+    width: 2px;
+    background: var(--accent-warm);
+  }
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .step-body { padding-top: 6px; }
+  .step-body h3 { font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+  .step-body p { font-size: 14px; color: var(--text-2); margin: 0; line-height: 1.45; }
+  .step-body strong { color: var(--text); font-weight: 500; }
+
+  /* ============ QUOTE ============ */
+  .quote {
+    background: var(--dark);
+    color: #E8E2D6;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    position: relative;
+  }
+  .quote .mark {
+    color: var(--accent);
+    font-size: 36px;
+    line-height: 1;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .quote p {
+    font-size: 17px;
+    line-height: 1.4;
+    color: #F0E8D6;
+    margin: 0;
+  }
+  .quote strong { color: var(--accent-bright); font-weight: 500; }
+  .quote em { color: #B5ADA0; font-style: italic; }
+
+  /* ============ BLUEPRINTS ============ */
+  .bp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  @media (min-width: 640px) { .bp-grid { grid-template-columns: repeat(3, 1fr); } }
+  .bp {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .bp .ico { width: 32px; height: 32px; margin-bottom: 8px; border-radius: 8px; }
+  .bp .ico svg { width: 16px; height: 16px; }
+  .bp .name { font-weight: 500; font-size: 14px; color: var(--text); margin-bottom: 2px; }
+  .bp .desc { font-size: 12px; color: var(--muted); line-height: 1.35; }
+
+  /* ============ FLOW DIAGRAM (App Club) ============ */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .flow-node {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .flow-node.accent { background: var(--bg-gold); border-color: var(--accent); }
+  .flow-node .ico { width: 36px; height: 36px; border-radius: 10px; }
+  .flow-node .text { flex: 1; }
+  .flow-node .text strong { display: block; font-weight: 500; color: var(--text); font-size: 14px; }
+  .flow-node .text span { font-size: 12px; color: var(--muted); }
+  .flow-arrow {
+    display: flex;
+    justify-content: center;
+    color: var(--accent-deep);
+  }
+  .flow-arrow svg { width: 18px; height: 18px; }
+
+  /* ============ TIMELINE ============ */
+  .timeline {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 640px) { .timeline { grid-template-columns: 1fr 1fr; } }
+  .phase {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+  }
+  .phase.now {
+    background: var(--bg-gold);
+    border-color: var(--accent);
+  }
+  .phase .when {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .phase .when .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .phase h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  .phase ul { list-style: none; padding: 0; }
+  .phase li {
+    font-size: 14px;
+    color: var(--text-2);
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .phase li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent-deep);
+    font-weight: 700;
+  }
+
+  /* ============ RISK TABLE ============ */
+  .risks { display: flex; flex-direction: column; gap: 12px; }
+  .risk {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .risk .row {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    align-items: flex-start;
+  }
+  .risk .row + .row { border-top: 1px dashed var(--border); }
+  .risk .row.r { background: rgba(200, 90, 58, 0.04); }
+  .risk .row.m { background: var(--bg-gold); }
+  .risk .row .ico { width: 30px; height: 30px; border-radius: 8px; }
+  .risk .row .ico svg { width: 15px; height: 15px; }
+  .risk .row .label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding-top: 8px;
+  }
+  .risk .row.r .label { color: var(--red); }
+  .risk .row.m .label { color: var(--accent-deep); }
+  .risk .row p { font-size: 14px; color: var(--text-2); margin: 0; flex: 1; line-height: 1.4; }
+
+  /* ============ CHECKLIST ============ */
+  .checklist {
+    background: var(--dark);
+    color: #E8E2D6;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin: 8px 0;
+  }
+  .checklist h2 { color: var(--bg-gold); margin-bottom: 8px; }
+  .checklist .eyebrow { color: var(--accent-warm); }
+  .checklist .eyebrow .line { background: var(--accent-warm); }
+  .check-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item .box {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1.5px solid var(--accent-bright);
+    color: var(--dark);
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .check-item .txt { font-size: 15px; color: #F0E8D6; flex: 1; }
+  .check-item .txt strong { color: var(--accent-bright); font-weight: 500; }
+  .check-item .who {
+    flex-shrink: 0;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-warm);
+    padding: 3px 8px;
+    border: 1px solid var(--accent-warm);
+    border-radius: 999px;
+    margin-top: 3px;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    text-align: center;
+    padding: 48px 24px 64px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer .who {
+    color: var(--text-2);
+    font-weight: 500;
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+  footer .who span { color: var(--accent-deep); }
+
+  /* ============ BIG NUMBER ============ */
+  .big-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    background: var(--bg-gold);
+    border: 1px solid var(--accent-warm);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 8px 0;
+  }
+  .big-stat .num {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-deep);
+    font-variant-numeric: tabular-nums;
+  }
+  .big-stat .lbl { font-size: 13px; color: var(--text-2); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="badge"><span class="dot"></span>Plano · Junho 2026</span>
+    <h1>James <span class="gradient">+</span> Pinhas<br/>vender IA aos negócios da zona.</h1>
+    <p>Tudo o que pensámos, num documento só. <strong>Lê na diagonal — está feito para isso.</strong></p>
+
+    <div class="pair">
+      <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>
+      <span><strong>Pinhas</strong> · vendas, rede, terreno &nbsp;·&nbsp; <strong>James</strong> · técnico, builds, agentes</span>
+    </div>
+  </div>
+</header>
+
+<!-- 01 — TESE -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>01 · A tese</div>
+    <h2>Porquê <span class="gradient">IA</span>, porquê agora, porquê nós.</h2>
+
+    <div class="tiles">
+      <div class="tile">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="body">
+          <h3>IA é o anzol perfeito em 2026</h3>
+          <p>Donos de PME estão curiosos. Quase ninguém sabe por onde começar. <strong>Quem entra primeiro fica com o mercado.</strong></p>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3-3m0 6l3-3"/></svg>
+        </div>
+        <div class="body">
+          <h3>Cross-sell vem depois, natural</h3>
+          <p>Sites, social, automações — entram <em>depois</em>. Ninguém liga a pedir um site em 2026. Liga para perguntar <span class="hl">"isto da IA dá para mim?"</span></p>
+        </div>
+      </div>
+
+      <div class="tile warm">
+        <div class="ico solid">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+        </div>
+        <div class="body">
+          <h3>A peça que faltava: tu + eu</h3>
+          <p><strong>Pinhas:</strong> excelente salesman. <strong>James:</strong> excelente technical. Investimento 50/50, decisões 50/50.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 — SEGMENTO -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>02 · Segmento alvo</div>
+    <h2>O <span class="gradient">"middle point"</span> — onde está o dinheiro.</h2>
+
+    <div class="funnel">
+      <div class="funnel-row">
+        <div class="verdict no">✕</div>
+        <div class="content">
+          <div class="label">Pequenos</div>
+          <h3>Café, loja de bairro</h3>
+          <p>Sem orçamento. Simpáticos, mas não pagam 5k€.</p>
+        </div>
+      </div>
+
+      <div class="funnel-row target">
+        <div class="verdict yes">✓</div>
+        <div class="content">
+          <div class="label">Sweet spot</div>
+          <h3>PMEs · 20–150 funcionários · 1–10M€</h3>
+          <p>Dor operacional real. Têm dinheiro (5–15k€ não os mata). Patrão decide sozinho. IT, se existe, é helpdesk — sem bandwidth para inovar.</p>
+        </div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="verdict no">✕</div>
+        <div class="content">
+          <div class="label">Grandes</div>
+          <h3>Empresas com IT robusto</h3>
+          <p>Comité de decisão. Ciclos de 9 meses. IT bloqueia ou compete.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tile" style="margin-top: 20px; background: var(--surface);">
+      <div class="ico green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <div class="body">
+        <h3>Posicionamento que desarma o IT interno</h3>
+        <p>Não vamos como "agente de inovação" (ameaça). Vamos como <strong>extensão da equipa IT</strong> — fazemos os projectos chatos de IA que eles não têm tempo. Eles ficam com o crédito interno. <strong>Reduz 80% da resistência.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 — AQUISIÇÃO -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>03 · Aquisição</div>
+    <h2>Dois canais <span class="gradient">em paralelo</span>.</h2>
+
+    <div class="duo">
+      <div class="tile">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8z"/></svg>
+        </div>
+        <div class="body">
+          <h3>A · Anúncios locais</h3>
+          <p>Meta + Google na zona. Landing page com formulário. Lead clica = <strong>já piscou o olho</strong>.</p>
+          <p style="margin-top: 8px; color: var(--muted); font-size: 13px;">⚠ Copy estreito por vertical ou por dor. Genérico atrai curiosos.</p>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="body">
+          <h3>B · Cold call · Leads CRM</h3>
+          <p>O meu sistema (Google Places API) filtra PMEs da zona. <strong>Tu escolhes a quem ligas.</strong></p>
+          <p style="margin-top: 8px; color: var(--muted); font-size: 13px;">→ Mesma oferta: consultor in-loco, grátis.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="big-stat" style="margin-top: 16px;">
+      <span class="num">4 sem.</span>
+      <span class="lbl">depois medimos qual canal traz leads que <strong>pagam</strong>. O que ganhar, escala.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 04 — QUALIFICAÇÃO -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>04 · Qualificação</div>
+    <h2>Filtrar <span class="gradient">antes</span> da reunião, não depois.</h2>
+
+    <p style="font-size: 15px; color: var(--text-2); margin-bottom: 16px;">
+      Erro antigo: ir à reunião, falar bem, mandar proposta de 800€, lead desaparece. Filtro vai para o formulário:
+    </p>
+
+    <div class="filter">
+      <div class="filter-row">
+        <div class="check no">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <div class="label">Orçamento até <strong>1.000€</strong></div>
+        <div class="verdict no">Email auto</div>
+      </div>
+      <div class="filter-row">
+        <div class="check no">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <div class="label">Orçamento <strong>1–3k€</strong></div>
+        <div class="verdict no">Pacote básico</div>
+      </div>
+      <div class="filter-row">
+        <div class="check yes">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>
+        </div>
+        <div class="label">Orçamento <strong>3–8k€</strong></div>
+        <div class="verdict yes">Reunião</div>
+      </div>
+      <div class="filter-row">
+        <div class="check yes">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>
+        </div>
+        <div class="label">Orçamento <strong>8k€+</strong></div>
+        <div class="verdict yes">Reunião VIP</div>
+      </div>
+      <div class="filter-row">
+        <div class="check yes">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>
+        </div>
+        <div class="label">"Ainda não sei" + perfil bom</div>
+        <div class="verdict yes">Reunião</div>
+      </div>
+    </div>
+
+    <p style="font-size: 13px; color: var(--muted); margin-top: 14px; text-align: center;">
+      Também perguntamos: nº funcionários · sector · processo mais chato/repetitivo.
+    </p>
+  </div>
+</section>
+
+<!-- 05 — REUNIÃO -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>05 · A reunião</div>
+    <h2>In-loco. <span class="gradient">Atrito zero</span> para o cliente.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Consultor vai ao espaço · grátis</h3>
+          <p>Eu primeiro, ou tu, ou os dois nos quentes. Bem vestidos, apresentação preparada.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Mapeamos processos · ouvimos dor</h3>
+          <p>Não é pitch. É <strong>entrevista de descoberta</strong>. Template fixo de notas (sector, funcionários, ferramentas, top 3 dores, decisor, fecho).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Sem preço na hora · em projectos 5k€+</h3>
+          <p>Damos gama ("ficam entre X e Y"). <strong>Proposta detalhada em 48h.</strong> Não é surpresa — é profissionalismo.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Notas no mesmo sítio · sempre</h3>
+          <p>Ao fim de 20 reuniões fazemos query e vemos padrões. <strong>Sem isto, é só memória difusa.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 — PRODUTO -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>06 · O que vendemos</div>
+    <h2>Serviço primeiro. <span class="gradient">Produto depois.</span></h2>
+
+    <div class="quote">
+      <div class="mark">"</div>
+      <p>Não construas <em>features</em> de IA que a OpenAI te vai dar de borla daqui a um ano. Constrói <strong>estrutura</strong> — dados, contexto, ambiente — que só tu tens.</p>
+    </div>
+
+    <div class="tile" style="margin-top: 20px;">
+      <div class="ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="body">
+        <h3>Regra: serviço primeiro</h3>
+        <p>Cobramos <strong>3–8k€</strong> por implementação custom usando ferramentas que já existem (n8n, OpenAI, Claude, Whisper). Só quando virmos o <strong>mesmo problema 5×</strong> num vertical é que construímos produto.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 28px; font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;">Blueprints já prontos · meu laboratório</h3>
+
+    <div class="bp-grid">
+      <div class="bp">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="name">Leads CRM</div>
+        <div class="desc">Mapeamento de negócios via Google Places + qualificação</div>
+      </div>
+      <div class="bp">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        </div>
+        <div class="name">Propostas</div>
+        <div class="desc">Propostas comerciais geradas com IA</div>
+      </div>
+      <div class="bp">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg>
+        </div>
+        <div class="name">Ops Hub</div>
+        <div class="desc">Backend central · tasks · logs · integrações</div>
+      </div>
+      <div class="bp">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15A2.5 2.5 0 0 1 9.5 22h-3A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2zM14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 2.5 2.5h3a2.5 2.5 0 0 0 2.5-2.5v-15A2.5 2.5 0 0 0 17.5 2z"/></svg>
+        </div>
+        <div class="name">Second Brain</div>
+        <div class="desc">Base de conhecimento + agentes (Obsidian)</div>
+      </div>
+      <div class="bp">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+        </div>
+        <div class="name">Dispatch</div>
+        <div class="desc">Email marketing com IA</div>
+      </div>
+      <div class="bp">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <div class="name">Reels Pipeline</div>
+        <div class="desc">Produção automatizada de vídeo curto</div>
+      </div>
+    </div>
+
+    <p style="font-size: 14px; color: var(--text-2); margin-top: 16px;">
+      <strong>+ Scoring Lab</strong> — projecto complexo de scoring já entregue. Prova de capacidade técnica.
+    </p>
+  </div>
+</section>
+
+<!-- 07 — APP CLUB -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>07 · Retenção</div>
+    <h2>App Club · o sistema de <span class="gradient">retainer</span>.</h2>
+
+    <p style="font-size: 15px; color: var(--text-2); margin-bottom: 4px;">
+      Depois do projecto inicial, o cliente <strong>não sai</strong>. Entra num clube.
+    </p>
+
+    <div class="flow">
+      <div class="flow-node">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="text"><strong>Canal partilhado · Telegram/Slack</strong><span>cliente pede features quando quiser</span></div>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </div>
+      <div class="flow-node">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <div class="text"><strong>Backlog Kanban</strong><span>features entram em fila · vêm para nós</span></div>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </div>
+      <div class="flow-node">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="text"><strong>James + agentes priorizam</strong><span>não somos reféns de pedidos</span></div>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </div>
+      <div class="flow-node accent">
+        <div class="ico solid">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20M6 14h4"/></svg>
+        </div>
+        <div class="text"><strong>Sistema de créditos mensais</strong><span>cada feature = X créditos · plano maior = mais créditos</span></div>
+      </div>
+    </div>
+
+    <div class="duo" style="margin-top: 20px;">
+      <div class="tile">
+        <div class="ico green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-5"/></svg>
+        </div>
+        <div class="body"><h3>Receita recorrente</h3><p>Mensalidade fixa. Previsível.</p></div>
+      </div>
+      <div class="tile">
+        <div class="ico green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="body"><h3>Cliente sente-se insider</h3><p>Não é cliente — é membro do clube.</p></div>
+      </div>
+      <div class="tile">
+        <div class="ico green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="body"><h3>Dados de ouro</h3><p>Backlog colectivo = ver que produto construir.</p></div>
+      </div>
+      <div class="tile">
+        <div class="ico green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="body"><h3>Controlamos prioridades</h3><p>Não fazemos tudo o que pedem — fazemos o que vale.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 — ESTRATÉGIA -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>08 · Estratégia</div>
+    <h2>Jogo A <span class="gradient">→</span> Jogo B.</h2>
+
+    <div class="timeline">
+      <div class="phase now">
+        <div class="when"><span class="pulse"></span>0–6 meses · AGORA</div>
+        <h3>Jogo A · Agência Premium</h3>
+        <ul>
+          <li>Implementações custom 3–8k€</li>
+          <li>App Club com retainer</li>
+          <li>Cross-sell de tudo o que a agência já faz</li>
+          <li><strong>Facturar</strong> + conhecer 30–50 PMEs por dentro</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="when">6–12 meses · DEPOIS</div>
+        <h3>Jogo B · Software in a Service</h3>
+        <ul>
+          <li>Escolher <strong>1 vertical</strong> onde vimos a dor 5×</li>
+          <li>Construir estrutura defensável (dados + contexto)</li>
+          <li>SaaS + serviço</li>
+          <li>Escala que vale por <strong>múltiplo</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="font-size: 14px; color: var(--muted); text-align: center; margin-top: 16px;">
+      Não dá para fazer os dois ao mesmo tempo. As reuniões dizem-nos qual o vertical.
+    </p>
+  </div>
+</section>
+
+<!-- 09 — RISCOS -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span>09 · Avisos honestos</div>
+    <h2>Riscos que tenho de te <span class="gradient">dizer</span>.</h2>
+
+    <div class="risks">
+      <div class="risk">
+        <div class="row r">
+          <div class="ico red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="label">Risco</div>
+          <p>"Consultor grátis" custa-nos tempo. Se vierem 20 leads/semana, não escala.</p>
+        </div>
+        <div class="row m">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+          <div class="label">Solução</div>
+          <p>Qualificação dura no formulário. Reunião só com quem passa. Primeiro só eu vou.</p>
+        </div>
+      </div>
+
+      <div class="risk">
+        <div class="row r">
+          <div class="ico red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="label">Risco</div>
+          <p>Salto mental de 1.700€ → 8k€. É anchoring meu, não falta de skill — mas vai pesar.</p>
+        </div>
+        <div class="row m">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+          <div class="label">Solução</div>
+          <p><strong>Tu dizes o número.</strong> Salesman não tem o meu bias. Calibramos juntos antes de cada proposta.</p>
+        </div>
+      </div>
+
+      <div class="risk">
+        <div class="row r">
+          <div class="ico red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="label">Risco</div>
+          <p>Sair de 15 reuniões com 15 ideias diferentes e construir produto cedo demais.</p>
+        </div>
+        <div class="row m">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+          <div class="label">Solução</div>
+          <p>Regra fixa: serviço primeiro. Produto só com mesmo problema 5×.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 — PRÓXIMOS PASSOS -->
+<section style="border-bottom: none;">
+  <div class="wrap">
+    <div class="checklist">
+      <div class="eyebrow"><span class="line"></span>10 · Próximos passos</div>
+      <h2>Esta semana.</h2>
+
+      <div class="check-item">
+        <div class="box">✓</div>
+        <div class="txt">Alinharmos os dois sobre este documento. <strong>O que retirar, mudar, falta.</strong></div>
+        <div class="who">Os 2</div>
+      </div>
+      <div class="check-item">
+        <div class="box">✓</div>
+        <div class="txt">Definir orçamento de anúncios · <strong>50/50</strong> · mês 1 teste.</div>
+        <div class="who">Os 2</div>
+      </div>
+      <div class="check-item">
+        <div class="box">✓</div>
+        <div class="txt">Construir landing page com formulário de qualificação.</div>
+        <div class="who">James</div>
+      </div>
+      <div class="check-item">
+        <div class="box">✓</div>
+        <div class="txt">Filtrar Leads CRM · 30–50 PMEs da zona no perfil certo.</div>
+        <div class="who">James</div>
+      </div>
+      <div class="check-item">
+        <div class="box">✓</div>
+        <div class="txt">Decidir copy do anúncio · <strong>vertical específico ou dor concreta</strong>.</div>
+        <div class="who">Os 2</div>
+      </div>
+      <div class="check-item">
+        <div class="box">✓</div>
+        <div class="txt">Pinhas arranca chamadas em paralelo aos anúncios.</div>
+        <div class="who">Pinhas</div>
+      </div>
+      <div class="check-item">
+        <div class="box">✓</div>
+        <div class="txt">Template de notas de reunião pronto antes da primeira.</div>
+        <div class="who">James</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="who">James <span>+</span> Pinhas</div>
+  <div>Documento de trabalho · Junho 2026 · v2</div>
+</footer>
+
+</body>
+</html>

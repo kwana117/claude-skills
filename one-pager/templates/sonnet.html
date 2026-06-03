@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="pt-PT" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Acme Co — Ponto de Situação · 2026-04-24</title>
+<meta name="description" content="Estado dos projectos Acme Co após reunião de 24 de abril 2026.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --font-body: 'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --bg-primary: #F5F1EB;
+    --bg-secondary: #EEE9DE;
+    --surface: #FBF8F2;
+    --surface-hover: #EAE3D4;
+
+    --text-primary: #2A2621;
+    --text-secondary: #56504A;
+    --text-muted: #8A8278;
+
+    --accent: #CC785C;
+    --accent-hover: #B8634A;
+    --accent-muted: rgba(204, 120, 92, 0.10);
+    --accent-subtle: rgba(204, 120, 92, 0.05);
+    --accent-deep: #8B4A36;
+
+    --border: #D9D2C3;
+    --border-subtle: #E4DED0;
+
+    --ink: #1A1814;
+    --highlight: #F0D9A8;
+
+    --green: #6B8E4E;
+    --green-muted: rgba(107, 142, 78, 0.12);
+    --amber: #B8823A;
+    --amber-muted: rgba(184, 130, 58, 0.12);
+    --rose: #B8513A;
+    --rose-muted: rgba(184, 81, 58, 0.10);
+
+    --shadow-sm: 0 1px 2px rgba(80, 60, 40, 0.06);
+    --shadow-md: 0 4px 12px rgba(80, 60, 40, 0.08);
+    --shadow-lg: 0 12px 32px rgba(80, 60, 40, 0.10);
+    --shadow-card: 0 1px 3px rgba(80, 60, 40, 0.05), 0 0 0 1px rgba(80, 60, 40, 0.03);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection { background: var(--highlight); color: var(--ink); }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+  section { padding: 72px 0; }
+  @media (max-width: 640px) { section { padding: 48px 0; } }
+
+  /* TYPOGRAPHY — tudo Inter, variações por weight */
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
+  .h1 { font-size: clamp(2.25rem, 4vw + 1rem, 3.75rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+  .h2 { font-size: clamp(1.625rem, 2.5vw + 0.5rem, 2.25rem); }
+  .h3 { font-size: clamp(1.125rem, 1vw + 0.5rem, 1.375rem); }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    margin-bottom: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: ''; width: 20px; height: 1px; background: var(--accent);
+  }
+
+  .lead {
+    font-size: clamp(1.0625rem, 0.5vw + 0.95rem, 1.1875rem);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  .muted { color: var(--text-muted); }
+  .mono { font-family: var(--font-mono); }
+
+  /* NAV */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(245, 241, 235, 0.88);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 28px;
+    display: flex; align-items: center; justify-content: space-between; height: 64px;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
+  .logo-mark {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--accent); color: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+  }
+  .logo-text { font-weight: 700; font-size: 17px; letter-spacing: -0.01em; }
+  .nav-tag {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--text-muted);
+    padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border);
+    letter-spacing: 0.04em;
+  }
+
+  /* HERO */
+  .hero { position: relative; padding: 96px 0 64px; overflow: hidden; }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(800px 400px at 15% 20%, var(--accent-muted), transparent 60%),
+                radial-gradient(600px 300px at 90% 90%, rgba(240, 217, 168, 0.35), transparent 60%);
+    opacity: 0.9;
+  }
+  .hero-content { position: relative; }
+  .hero h1 { margin: 0 0 24px; color: var(--ink); }
+  .hero h1 .accent-highlight { background: linear-gradient(180deg, transparent 62%, var(--highlight) 62%); padding: 0 4px; }
+  .hero .lead { max-width: 680px; }
+
+  .hero-marks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 36px; }
+  .mark {
+    font-size: 12.5px; padding: 6px 13px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text-secondary);
+    display: inline-flex; align-items: center; gap: 7px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .mark:hover { background: var(--surface-hover); color: var(--text-primary); }
+  .mark-accent { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+  .mark-accent:hover { background: var(--accent-hover); color: var(--surface); }
+
+  /* SECTION HEAD */
+  .section-head { margin-bottom: 40px; max-width: 720px; }
+  .section-head .lead { margin: 14px 0 0; }
+
+  /* PROJECT GRID — 3 columns with status colors */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+  }
+  .proj-card {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px; box-shadow: var(--shadow-card);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .proj-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .proj-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 48px; height: 3px;
+    background: var(--accent); border-radius: 6px 0 0 0;
+  }
+  .proj-card.rose::before { background: var(--rose); }
+  .proj-card.amber::before { background: var(--amber); }
+  .proj-card.green::before { background: var(--green); }
+  .proj-card.muted::before { background: var(--text-muted); opacity: 0.4; }
+
+  .proj-tag {
+    font-family: var(--font-mono);
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px; display: inline-block;
+  }
+  .proj-card.rose .proj-tag { color: var(--rose); }
+  .proj-card.amber .proj-tag { color: var(--amber); }
+  .proj-card.green .proj-tag { color: var(--green); }
+  .proj-card.muted .proj-tag { color: var(--text-muted); }
+
+  .proj-name { font-size: 19px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.01em; }
+  .proj-meta { font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .proj-card.rose .proj-meta { color: var(--rose); }
+  .proj-card.amber .proj-meta { color: var(--amber); }
+  .proj-card.green .proj-meta { color: var(--green); }
+  .proj-card.muted .proj-meta { color: var(--text-muted); font-size: 20px; }
+  .proj-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* DETAIL CARDS */
+  .detail-stack { display: flex; flex-direction: column; gap: 14px; }
+  .detail-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .detail-head {
+    padding: 18px 24px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--surface-hover);
+  }
+  .detail-num {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--text-muted); font-weight: 500;
+  }
+  .detail-title { font-size: 17px; font-weight: 700; color: var(--text-primary); flex: 1; }
+
+  .status-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .status-chip::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+  }
+  .status-rose { background: var(--rose-muted); color: var(--rose); }
+  .status-rose::before { background: var(--rose); animation: pulse 2s infinite; }
+  .status-amber { background: var(--amber-muted); color: var(--amber); }
+  .status-amber::before { background: var(--amber); }
+  .status-green { background: var(--green-muted); color: var(--green); }
+  .status-green::before { background: var(--green); }
+  .status-muted { background: rgba(138, 130, 120, 0.12); color: var(--text-muted); }
+  .status-muted::before { background: var(--text-muted); }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .detail-body { padding: 22px 24px; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  @media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; gap: 20px; } }
+
+  .subhead {
+    font-family: var(--font-mono);
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .subhead.rose { color: var(--rose); }
+  .subhead.green { color: var(--green); }
+  .subhead.accent { color: var(--accent); }
+
+  .bullets { list-style: none; padding: 0; margin: 0; }
+  .bullets li {
+    position: relative; padding: 6px 0 6px 22px;
+    font-size: 14.5px; color: var(--text-secondary); line-height: 1.55;
+  }
+  .bullets li::before {
+    content: ''; position: absolute; left: 0; top: 13px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .kcode {
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+    padding: 2px 6px; border-radius: 3px; color: var(--text-primary);
+  }
+
+  /* FLOW (pipeline) */
+  .pipeline {
+    background: var(--surface); border: 1px solid var(--border-subtle);
+    border-radius: 6px; padding: 24px; box-shadow: var(--shadow-card);
+  }
+  .pipeline-flow {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px;
+  }
+  .pipeline-step {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px; border-radius: 6px;
+    background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+    font-size: 13.5px; color: var(--text-primary); font-weight: 500;
+  }
+  .pipeline-arrow {
+    color: var(--accent); font-family: var(--font-mono);
+    font-size: 15px; padding: 0 2px; font-weight: 600;
+  }
+
+  /* WORKSHOPS GRID (2-col cards) */
+  .ws-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .ws-card {
+    padding: 22px; background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px; box-shadow: var(--shadow-card);
+  }
+  .ws-card h4 {
+    font-size: 15px; font-weight: 700; color: var(--text-primary);
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .ws-card h4 .ic { font-size: 18px; }
+
+  .ws-feedback-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 640px) { .ws-feedback-grid { grid-template-columns: 1fr; } }
+  .ws-fb {
+    padding: 14px; background: var(--bg-secondary); border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+  }
+  .ws-fb-num {
+    font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .ws-fb-title { font-weight: 700; color: var(--text-primary); margin: 4px 0; font-size: 14.5px; }
+  .ws-fb-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* ACTION ITEMS (two columns) */
+  .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 768px) { .actions-grid { grid-template-columns: 1fr; } }
+  .actions-col {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px; padding: 24px; box-shadow: var(--shadow-card);
+  }
+  .actions-col h3 { font-size: 16px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+  .actions-col h3::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+  }
+  .actions-col.client h3::before { background: var(--rose); }
+  .actions-col.di h3::before { background: var(--accent); }
+
+  .action-item {
+    display: flex; gap: 12px; padding: 12px 14px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    border: 1px solid var(--border-subtle);
+  }
+  .action-item:last-child { margin-bottom: 0; }
+  .action-check {
+    width: 16px; height: 16px; border-radius: 3px;
+    border: 1.5px solid var(--border); flex-shrink: 0; margin-top: 2px;
+  }
+  .action-body { flex: 1; }
+  .action-title { font-weight: 600; color: var(--text-primary); font-size: 14px; margin-bottom: 2px; }
+  .action-meta { font-size: 12.5px; color: var(--text-muted); line-height: 1.45; }
+
+  /* NEXT STEPS */
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step {
+    display: grid; grid-template-columns: 44px 1fr;
+    gap: 18px; align-items: flex-start;
+    padding: 18px 22px; background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px; box-shadow: var(--shadow-card);
+    transition: all 0.25s;
+  }
+  .step:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
+  .step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent); color: var(--surface);
+    font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step h4 { font-size: 15.5px; font-weight: 700; margin-bottom: 4px; color: var(--text-primary); }
+  .step p { margin: 0; font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; }
+
+  /* FOOTER */
+  footer {
+    margin-top: 24px; padding: 40px 0 60px;
+    border-top: 1px solid var(--border-subtle);
+  }
+  footer .container {
+    display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between;
+    font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+  }
+  footer strong { color: var(--text-primary); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <div class="logo-mark">S</div>
+      <span class="logo-text">Acme Co</span>
+    </a>
+    <span class="nav-tag">Ponto de Situação · 2026-04-24</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="container hero-content">
+    <span class="eyebrow">Status · Acme Co × Studio North</span>
+    <h1 class="h1">
+      9 frentes abertas.<br>
+      <span class="accent-highlight">Workshops</span> são a prioridade<br>
+      desta semana.
+    </h1>
+    <p class="lead" style="margin-top: 24px;">
+      O cliente quer arrancar em Espanha com <strong style="color:var(--accent); font-weight:600;">IBF + ESG</strong>
+      e lançar uma plataforma de workshops com pagamento, certificação e feedback automáticos.
+      Este é o mapa do que está fechado, do que aguarda validação, e do que depende de decisões
+      para arrancar.
+    </p>
+    <div class="hero-marks">
+      <a href="#projectos" class="mark mark-accent">📦 9 projectos</a>
+      <a href="#workshops" class="mark">🎓 Workshops</a>
+      <a href="#website" class="mark">🌐 Website + Directório</a>
+      <a href="#actions" class="mark">✅ Action items</a>
+      <a href="#next" class="mark">🎯 Próxima reunião</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT OVERVIEW -->
+<section id="projectos" style="background: var(--bg-secondary); padding: 64px 0;">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">01 · Estado dos projectos</span>
+      <h2 class="h2">Panorama geral.</h2>
+      <p class="lead">9 frentes em paralelo. Cor e percentagem indicam estado e prioridade.</p>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="proj-card rose">
+        <span class="proj-tag">🔥 Prioridade #1</span>
+        <div class="proj-name">Workshops</div>
+        <div class="proj-meta">40%</div>
+        <div class="proj-desc">Specs fechadas · integrações Payments API / Billing API / Resend por arrancar</div>
+      </div>
+
+      <div class="proj-card amber">
+        <span class="proj-tag">⚡ Em curso</span>
+        <div class="proj-name">Website + Directório</div>
+        <div class="proj-meta">60%</div>
+        <div class="proj-desc">Directório com PageSpeed ≥90 · formulários e mocks por fechar</div>
+      </div>
+
+      <div class="proj-card rose">
+        <span class="proj-tag">🇪🇸 Prioridade enorme</span>
+        <div class="proj-name">IBF Bilingue</div>
+        <div class="proj-meta">20%</div>
+        <div class="proj-desc">Arranque Top 5 em Espanha · deadline a definir pelo Alex</div>
+      </div>
+
+      <div class="proj-card amber">
+        <span class="proj-tag">⏱️ Validação pendente</span>
+        <div class="proj-name">Acme Lab · Nova versão</div>
+        <div class="proj-meta">90%</div>
+        <div class="proj-desc">Entregue · Lena valida segunda-feira</div>
+      </div>
+
+      <div class="proj-card amber">
+        <span class="proj-tag">🔧 Em desenvolvimento</span>
+        <div class="proj-name">CSV + ZIP Export</div>
+        <div class="proj-meta">30%</div>
+        <div class="proj-desc">Specs acordadas com Marco · entrega segunda-feira</div>
+      </div>
+
+      <div class="proj-card green">
+        <span class="proj-tag">✅ Entregue</span>
+        <div class="proj-name">360 · Q1</div>
+        <div class="proj-meta">100%</div>
+        <div class="proj-desc">Aguarda aprovação do cliente para avançar Q2 + Q3</div>
+      </div>
+
+      <div class="proj-card amber">
+        <span class="proj-tag">🔍 Exploração</span>
+        <div class="proj-name">Moodle Workplace</div>
+        <div class="proj-meta">10%</div>
+        <div class="proj-desc">Tom avalia hoje · prazo quarta-feira</div>
+      </div>
+
+      <div class="proj-card muted">
+        <span class="proj-tag">💤 Deprioritizado</span>
+        <div class="proj-name">IBF Billing</div>
+        <div class="proj-meta">—</div>
+        <div class="proj-desc">Preparado · arranca depois dos Workshops</div>
+      </div>
+
+      <div class="proj-card muted">
+        <span class="proj-tag">📌 Laterais</span>
+        <div class="proj-name">Banner + Fichas Rita</div>
+        <div class="proj-meta">2</div>
+        <div class="proj-desc">Banner Acme Magazine + dúvidas das Fichas a passar à Rita</div>
+      </div>
+
+    </div>
+
+    <!-- Priority flow -->
+    <div class="pipeline" style="margin-top: 28px;">
+      <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px;">
+        Ordem de prioridade do cliente
+      </div>
+      <div class="pipeline-flow">
+        <span class="pipeline-step">🎓 Workshops</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">🌐 Website + Directório</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">🇪🇸 IBF Bilingue</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">📊 360 (aprovar Q1)</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">🎒 Moodle</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">💳 IBF Billing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS DETAIL -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">02 · Projectos em detalhe</span>
+      <h2 class="h2">O que ficou decidido, o que falta.</h2>
+    </div>
+
+    <div class="detail-stack">
+
+      <!-- SG LAB -->
+      <div class="detail-card">
+        <div class="detail-head">
+          <span class="detail-num">01</span>
+          <span class="status-chip status-amber">Validação pendente</span>
+          <span class="detail-title">Acme Lab · Nova versão</span>
+          <span class="mono" style="font-size:12px; color:var(--text-muted);">multilingue-ready</span>
+        </div>
+        <div class="detail-body">
+          <div class="detail-grid">
+            <div>
+              <div class="subhead">Entregue</div>
+              <ul class="bullets">
+                <li>Nova versão em nova tecnologia — pronta para PT/ES/FR</li>
+                <li>Alex enviou há 3 dias</li>
+                <li>Evolutivo pedido pela Lena já implementado</li>
+              </ul>
+            </div>
+            <div>
+              <div class="subhead accent">Decisão</div>
+              <ul class="bullets">
+                <li>Continuar <strong style="color:var(--text-primary)">só na nova versão</strong>, não mexer na antiga</li>
+                <li>CSVs e evolutivos pendentes ficam para a nova versão</li>
+                <li>Lena / Marco validam <span class="kcode">segunda-feira</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSV -->
+      <div class="detail-card">
+        <div class="detail-head">
+          <span class="detail-num">02</span>
+          <span class="status-chip status-amber">Em desenvolvimento</span>
+          <span class="detail-title">CSV Export do Acme Lab</span>
+          <span class="mono" style="font-size:12px; color:var(--text-muted);">entrega segunda</span>
+        </div>
+        <div class="detail-body">
+          <div class="detail-grid">
+            <div>
+              <div class="subhead rose">Problema</div>
+              <ul class="bullets">
+                <li>Marco não conseguia extrair o Excel corretamente</li>
+                <li>CSV antigo tinha hierarquia de campos (subcategorias) — Excel não reconhece</li>
+                <li>Cada campo tem de viver na sua própria linha</li>
+              </ul>
+            </div>
+            <div>
+              <div class="subhead green">Solução acordada</div>
+              <ul class="bullets">
+                <li>Uma única exportação por projecto com <strong style="color:var(--text-primary)">tudo lá dentro</strong></li>
+                <li><span class="kcode">share.zip</span> inclui: CSV (dados utilizador) + imagens produzidas + documentos do cliente</li>
+                <li>Coluna A identifica a fase (1, 2, 3…) · sem hierarquia</li>
+              </ul>
+            </div>
+          </div>
+          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border);">
+            <div class="subhead">Fluxo</div>
+            <div class="pipeline-flow" style="margin-top: 6px;">
+              <span class="pipeline-step">🗂️ Backoffice Acme Lab</span>
+              <span class="pipeline-arrow">→</span>
+              <span class="pipeline-step">📦 share.zip</span>
+              <span class="pipeline-arrow">→</span>
+              <span class="pipeline-step">📁 Pasta cliente</span>
+              <span class="pipeline-arrow">→</span>
+              <span class="pipeline-step">📄 Template bebe CSV</span>
+              <span class="pipeline-arrow">→</span>
+              <span class="pipeline-step">📊 Gráficos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IBF BILINGUE -->
+      <div class="detail-card" style="border-color: var(--rose-muted); border-width: 1.5px;">
+        <div class="detail-head" style="background: var(--rose-muted);">
+          <span class="detail-num">03</span>
+          <span class="status-chip status-rose">Prioridade enorme</span>
+          <span class="detail-title">IBF Bilingue (Espanhol)</span>
+          <span class="mono" style="font-size:12px; color:var(--text-muted);">arranque Top 5 ES</span>
+        </div>
+        <div class="detail-body">
+          <div class="detail-grid">
+            <div>
+              <div class="subhead">Contexto</div>
+              <ul class="bullets">
+                <li>Cliente quer arrancar <strong style="color:var(--text-primary)">Top 5 em Espanha</strong> com IBF + ESG</li>
+                <li>Acme Lab é o momento certo <em>agora</em></li>
+                <li>IBF é Setembro/Outubro — "mais lume"</li>
+                <li>Imagem: "consultora que apoia em ESG + IBF + depois Top 5"</li>
+              </ul>
+            </div>
+            <div>
+              <div class="subhead accent">Abordagem</div>
+              <ul class="bullets">
+                <li>IBF espanhol já duplicado e actualizado</li>
+                <li>Mesma arquitectura que FIGAS / SLAB</li>
+                <li><strong style="color:var(--text-primary)">Uma instalação · só muda labels</strong> (não replicar a aplicação)</li>
+                <li>Evita bugs, duplicações, e escala para EN / DE no futuro</li>
+              </ul>
+            </div>
+          </div>
+          <div style="margin-top: 18px; padding: 12px 14px; background: var(--amber-muted); border-radius: 4px; font-size: 13.5px; color: var(--amber); font-weight: 500;">
+            ⚠️ Aguarda deadline do Alex (após reunião de follow-up)
+          </div>
+        </div>
+      </div>
+
+      <!-- MOODLE -->
+      <div class="detail-card">
+        <div class="detail-head">
+          <span class="detail-num">04</span>
+          <span class="status-chip status-amber">Explorar</span>
+          <span class="detail-title">Moodle · L-Learning</span>
+          <span class="mono" style="font-size:12px; color:var(--text-muted);">prazo quarta</span>
+        </div>
+        <div class="detail-body">
+          <div class="detail-grid">
+            <div>
+              <div class="subhead">Plano inicial</div>
+              <ul class="bullets">
+                <li>Moodle Zero — plataforma duplicada por cada cliente</li>
+                <li>Previsto para quarta-feira</li>
+              </ul>
+            </div>
+            <div>
+              <div class="subhead accent">Ideia nova · Moodle Workplace</div>
+              <ul class="bullets">
+                <li>Mesmo conjunto de cursos · front-ends diferentes por cliente</li>
+                <li>Ex: Fidelidade / Novo Banco / Socorro → mesmo curso, brandings distintos</li>
+                <li>Operação única: um curso → replica para todos os workplaces</li>
+                <li>Tom explora hoje — decide se substitui Moodle Zero</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 360 -->
+      <div class="detail-card">
+        <div class="detail-head">
+          <span class="detail-num">05</span>
+          <span class="status-chip status-green">Entregue</span>
+          <span class="detail-title">360 · Q1</span>
+          <span class="mono" style="font-size:12px; color:var(--text-muted);">aguarda aprovação</span>
+        </div>
+        <div class="detail-body">
+          <div class="detail-grid">
+            <div>
+              <div class="subhead green">Entregue há ~1 mês</div>
+              <ul class="bullets">
+                <li>Questionário Q1 implementado com todos os inputs do cliente</li>
+                <li>Testável ponta-a-ponta em ~15 minutos</li>
+              </ul>
+            </div>
+            <div>
+              <div class="subhead" style="color:var(--amber)">A bloquear Q2 + Q3</div>
+              <ul class="bullets">
+                <li>Cliente ainda não testou / aprovou Q1</li>
+                <li>Regra interna: aprovar Q1 antes de avançar os outros</li>
+                <li>Não avançar sem feedback para evitar retrabalho</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IBF BILLING -->
+      <div class="detail-card">
+        <div class="detail-head">
+          <span class="detail-num">06</span>
+          <span class="status-chip status-muted">Adiado</span>
+          <span class="detail-title">IBF Billing</span>
+          <span class="mono" style="font-size:12px; color:var(--text-muted);">pós-Workshops</span>
+        </div>
+        <div class="detail-body">
+          <p style="margin:0; font-size:14.5px; color:var(--text-secondary); line-height:1.6;">
+            Arquitectura já preparada no IBF. Decisão de reunião: <strong style="color:var(--text-primary)">não é prioritário agora</strong> — arranca depois dos Workshops. Dúvidas técnicas (WordPress / BML / filme) ficam para essa fase.
+          </p>
+        </div>
+      </div>
+
+      <!-- LATERAIS -->
+      <div class="detail-card">
+        <div class="detail-head">
+          <span class="detail-num">07</span>
+          <span class="status-chip status-muted">Laterais</span>
+          <span class="detail-title">Pendentes laterais</span>
+        </div>
+        <div class="detail-body">
+          <ul class="bullets" style="font-size: 14.5px;">
+            <li>🖼️ <strong style="color:var(--text-primary)">Banner Acme Magazine</strong> (Sara M.) — promo moldura no primeiro banner vendido. Entrevista já online.</li>
+            <li>📋 <strong style="color:var(--text-primary)">Fichas Rita</strong> — Tom manda email com dúvidas; passa à Rita; eventualmente reunião.</li>
+            <li>🌐 <strong style="color:var(--text-primary)">Mudança do site Contático</strong> — adiada (ideia gostada, mas não é prioridade agora).</li>
+            <li>✅ <strong style="color:var(--text-primary)">Evolutivo Lena / Acme Lab</strong> — já implementado. Confirmação pendente.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WORKSHOPS -->
+<section id="workshops" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">03 · Workshops · Spec fechada</span>
+      <h2 class="h2">Inscrição, pagamento, certificado, feedback.</h2>
+      <p class="lead">Tudo automatizado. Fluxo completo do participante, do backoffice e das integrações.</p>
+    </div>
+
+    <!-- Fluxo utilizador -->
+    <div class="pipeline" style="margin-bottom: 28px;">
+      <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px;">
+        Fluxo do participante
+      </div>
+      <div class="pipeline-flow">
+        <span class="pipeline-step">📝 Inscrição</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">☑️ Quer certificado? (+10€)</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">💳 Payments API (se sim)</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">🧾 Fatura Billing API</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">📧 Confirmação + ICS</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">📅 Calendar</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">🎓 Workshop + feedback</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step">🏅 Certificado</span>
+      </div>
+    </div>
+
+    <div class="ws-grid">
+
+      <div class="ws-card">
+        <h4><span class="ic">📝</span> Inscrição</h4>
+        <ul class="bullets" style="font-size: 13.5px;">
+          <li>Nome, último nome, email</li>
+          <li>Checkbox <strong style="color:var(--text-primary)">"Quero certificado (+10€)"</strong></li>
+          <li>NIF opcional · senão "consumidor final"</li>
+          <li>Se checkbox → pagamento Payments API antes de confirmar</li>
+          <li>Se não → confirmação directa</li>
+        </ul>
+      </div>
+
+      <div class="ws-card">
+        <h4><span class="ic">📧</span> Emails</h4>
+        <ul class="bullets" style="font-size: 13.5px;">
+          <li>Confirmação com <span class="kcode">.ics</span> (Google / Outlook)</li>
+          <li>Lembrete <strong style="color:var(--text-primary)">1 semana antes</strong></li>
+          <li>Lembrete <strong style="color:var(--text-primary)">na véspera</strong> (com link do workshop)</li>
+          <li>Feedback logo após o workshop</li>
+          <li>Envio via <span class="kcode">Resend</span></li>
+        </ul>
+      </div>
+
+      <div class="ws-card">
+        <h4><span class="ic">🗂️</span> Backoffice</h4>
+        <ul class="bullets" style="font-size: 13.5px;">
+          <li>Área <strong style="color:var(--text-primary)">Participantes</strong></li>
+          <li>Área <strong style="color:var(--text-primary)">Eventos</strong>: nome, data, hora, formador, link</li>
+          <li>Tabela <strong style="color:var(--text-primary)">Oradores</strong> (apresentação breve)</li>
+          <li>Gestor marca "assistiu sim/não" → dispara feedback</li>
+          <li>Gestor emite certificado no dia seguinte</li>
+        </ul>
+      </div>
+
+      <div class="ws-card">
+        <h4><span class="ic">⚖️</span> Política + FAQ</h4>
+        <ul class="bullets" style="font-size: 13.5px;">
+          <li>Cancelamento até <strong style="color:var(--text-primary)">48h antes</strong> → reembolso total</li>
+          <li>Após 48h → só com justificação (tipo falta laboral)</li>
+          <li>FAQ no rodapé: requisitos técnicos, cancelamento, certificado</li>
+        </ul>
+      </div>
+
+      <!-- Feedback -->
+      <div class="ws-card" style="grid-column: 1 / -1;">
+        <h4><span class="ic">📊</span> Feedback (1–5)</h4>
+        <div class="ws-feedback-grid">
+          <div class="ws-fb">
+            <div class="ws-fb-num">01 · GERAL</div>
+            <div class="ws-fb-title">Avaliação geral</div>
+            <div class="ws-fb-desc">Como avalia o workshop no geral?</div>
+          </div>
+          <div class="ws-fb">
+            <div class="ws-fb-num">02 · FORMADOR</div>
+            <div class="ws-fb-title">Formador</div>
+            <div class="ws-fb-desc">Conhecimentos + dinamização do workshop</div>
+          </div>
+          <div class="ws-fb">
+            <div class="ws-fb-num">03 · UTILIDADE</div>
+            <div class="ws-fb-title">Utilidade</div>
+            <div class="ws-fb-desc">Considera o workshop útil para si?</div>
+          </div>
+        </div>
+        <div style="margin-top: 14px; font-size: 12.5px; color: var(--text-muted); font-family: var(--font-mono);">
+          Todas as respostas exportáveis para estatísticas.
+        </div>
+      </div>
+
+      <!-- Integrações -->
+      <div class="ws-card" style="grid-column: 1 / -1; background: linear-gradient(180deg, var(--surface) 0%, var(--accent-subtle) 100%); border-color: var(--accent-muted);">
+        <h4 style="color: var(--accent)"><span class="ic">🔌</span> Integrações</h4>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+          <div>
+            <div style="font-weight: 700; color: var(--text-primary); font-size: 14.5px;">Payments API</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Mesma conta Acme Magazine · Alex confirma API keys</div>
+          </div>
+          <div>
+            <div style="font-weight: 700; color: var(--text-primary); font-size: 14.5px;">Billing API</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">API · código de produto dedicado · fluxo igual ao da revista</div>
+          </div>
+          <div>
+            <div style="font-weight: 700; color: var(--text-primary); font-size: 14.5px;">Resend</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Emails de confirmação, lembretes e feedback</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WEBSITE -->
+<section id="website">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">04 · Website · Directório · 360</span>
+      <h2 class="h2">Dois tempos: website em análise, directório já a voar.</h2>
+    </div>
+
+    <div class="detail-grid">
+
+      <!-- Website -->
+      <div class="detail-card">
+        <div class="detail-head">
+          <span class="status-chip status-amber">Em análise</span>
+          <span class="detail-title">Website · Redesign</span>
+        </div>
+        <div class="detail-body">
+          <div class="subhead">Processo em 3 camadas</div>
+          <div class="pipeline-flow" style="margin-bottom: 16px;">
+            <span class="pipeline-step">🎨 Consultora branding</span>
+            <span class="pipeline-arrow">→</span>
+            <span class="pipeline-step">📐 2 consultoras design</span>
+            <span class="pipeline-arrow">→</span>
+            <span class="pipeline-step">⚙️ Studio North implementa</span>
+          </div>
+          <ul class="bullets" style="font-size: 14px;">
+            <li>Mocks em Figma recebidos</li>
+            <li>Comunicação / design valida alinhamento na <strong style="color:var(--text-primary)">próxima semana</strong></li>
+            <li>Sugestões de copy a vir (ex: "reconhecimento" → "agradecimento")</li>
+            <li>Mobile: design já no Figma · ajustar aplicação final</li>
+          </ul>
+          <div style="margin-top: 16px; padding: 12px 14px; background: var(--rose-muted); border-radius: 4px; font-size: 13.5px; color: var(--rose); font-weight: 500;">
+            ⚠️ Consolidar os <strong>~15 formulários</strong> actuais num único formulário desdobrável (consultoria vs formação)
+          </div>
+        </div>
+      </div>
+
+      <!-- Directório -->
+      <div class="detail-card" style="border-color: var(--green-muted);">
+        <div class="detail-head" style="background: var(--green-muted);">
+          <span class="status-chip status-green">"Espectacular"</span>
+          <span class="detail-title">Directório · já implementado</span>
+        </div>
+        <div class="detail-body">
+          <ul class="bullets" style="font-size: 14px;">
+            <li>PageSpeed ≥ 90 (ideal &gt; 80)</li>
+            <li>Qualidade visual e velocidade aprovadas pelo cliente</li>
+            <li>Mobile design fixado no Figma</li>
+          </ul>
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border);">
+            <div class="subhead accent">Decisões tomadas</div>
+            <ul class="bullets" style="font-size: 14px;">
+              <li><strong style="color:var(--text-primary)">Home:</strong> mostrar "empresas em destaque" (não todas)</li>
+              <li><strong style="color:var(--text-primary)">Filtros:</strong> Todos / Top 5 / Top 10 + Sector + Região (distrito+concelho)</li>
+              <li><strong style="color:var(--text-primary)">Pesquisa</strong> principal pelo nome</li>
+              <li><strong style="color:var(--text-primary)">Anti-scraping:</strong> pesquisa por nome não dá visibilidade da base completa</li>
+            </ul>
+          </div>
+          <div style="margin-top: 16px; padding: 10px 14px; background: var(--amber-muted); border-radius: 4px; font-size: 13px; color: var(--amber); font-weight: 500;">
+            ⚠️ Orçamento para produção do Directório por entregar
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACTIONS -->
+<section id="actions" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">05 · Action items</span>
+      <h2 class="h2">Quem faz o quê.</h2>
+    </div>
+
+    <div class="actions-grid">
+
+      <!-- Cliente -->
+      <div class="actions-col client">
+        <h3>Lado Acme Co · cliente</h3>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Segunda-feira · Lena valida Acme Lab</div>
+            <div class="action-meta">Valida nova versão + abre caminho aos CSVs</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Testar e aprovar 360 Q1</div>
+            <div class="action-meta">15min ponta-a-ponta · desbloqueia Q2 + Q3</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Email com dúvidas das Fichas</div>
+            <div class="action-meta">Tom redige → passa à Rita → técnico</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Explorar Moodle Workplace</div>
+            <div class="action-meta">Tom avalia hoje · decide se substitui Moodle Zero</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DI -->
+      <div class="actions-col di">
+        <h3>Lado Studio North</h3>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">CSV Export Acme Lab</div>
+            <div class="action-meta">Dev hoje · entrega segunda-feira</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Workshops · integrações</div>
+            <div class="action-meta">Payments API · Billing API · Resend · ICS</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Formulário feedback + backoffice Workshops</div>
+            <div class="action-meta">Participantes · Eventos · Oradores · emissão certificado</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Análise Figma vs implementação do site</div>
+            <div class="action-meta">Comunicação / design · próxima semana</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Orçamento do Directório</div>
+            <div class="action-meta">Entregar ao Tom</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Deadline IBF Bilingue</div>
+            <div class="action-meta">Alex define após reunião de follow-up</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Reunião Microsoft · segunda 11h30</div>
+            <div class="action-meta">Alex acompanha (primeiras partidas foram complicadas)</div>
+          </div>
+        </div>
+
+        <div class="action-item">
+          <div class="action-check"></div>
+          <div class="action-body">
+            <div class="action-title">Banner Acme Magazine</div>
+            <div class="action-meta">Tratar com a Rita</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section id="next">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">06 · Próximos dias</span>
+      <h2 class="h2">Segunda-feira 11h30.</h2>
+      <p class="lead">O que tem de acontecer até à próxima reunião.</p>
+    </div>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h4>Validação Acme Lab · nova versão</h4>
+          <p>Lena testa de manhã. Se OK, os CSVs arrancam imediatamente. Confirmar paridade com a versão antiga.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h4>CSV Export a funcionar</h4>
+          <p>Fim do dia de segunda · Marco pode começar os modelos.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h4>Reunião Microsoft · 11h30</h4>
+          <p>Confirmação de agenda. Alex acompanha. Nunca antes das 11h30 (Tom tem compromisso às 9h).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <h4>Workshops · próxima entrega</h4>
+          <p>Arrancar integrações Payments API / Billing API / Resend. Definir data da próxima revisão com o cliente.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <h4>Próxima semana · Figma + Directório</h4>
+          <p>Análise Figma vs implementação. Fechar formulários + conteúdos do novo site. Entregar orçamento do Directório.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div><strong>Acme Co × Studio North</strong> · Ponto de Situação · 2026-04-24</div>
+    <div>9 frentes · 3 prioridade alta · 1 bloqueio (360 Q1)</div>
+    <div>preparado por Studio North · 2026</div>
+  </div>
+</footer>
+
+</body>
+</html>

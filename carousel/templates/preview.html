@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acme · #20 Parte II · Preview · Métodos de Extração</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #16140f;
+    --bg-card: #221f19;
+    --border: #383530;
+    --cream: #EDE5D4;
+    --muted: #8A8070;
+    --gold: #C9A84C;
+    --serif: "Cormorant Garamond", Garamond, serif;
+    --sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg-page); }
+  body {
+    font-family: var(--sans);
+    color: var(--cream);
+    padding: 32px 40px;
+    min-height: 100vh;
+  }
+  .page-header {
+    max-width: 1800px;
+    margin: 0 auto 28px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 16px; flex-wrap: wrap;
+    padding-bottom: 20px; border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 {
+    font-family: var(--serif); font-style: italic; font-weight: 500;
+    font-size: 26px; letter-spacing: -0.01em;
+  }
+  .page-header .meta { color: var(--muted); font-size: 13px; }
+  .page-header .meta strong { color: var(--gold); font-weight: 500; }
+  .back-link {
+    color: var(--muted); text-decoration: none; font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+  .back-link:hover { color: var(--gold); }
+  .open-local {
+    background: var(--bg-card); color: var(--cream);
+    border: 1px solid var(--border);
+    padding: 8px 14px; border-radius: 999px;
+    font-size: 12px; font-family: var(--sans); font-weight: 500;
+    letter-spacing: 0.04em; cursor: pointer;
+    transition: all 0.15s; margin-left: 8px;
+  }
+  .open-local:hover { background: var(--gold); color: #0E0C0A; border-color: var(--gold); }
+  .toast {
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #0E0C0A;
+    padding: 12px 22px; border-radius: 999px;
+    font-family: var(--sans); font-weight: 500; font-size: 13px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 1100;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 28px;
+    max-width: 1800px; margin: 0 auto;
+  }
+  .slide-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: zoom-in;
+    transition: transform 0.18s, border-color 0.18s;
+    display: flex; flex-direction: column;
+  }
+  .slide-wrap:hover { transform: translateY(-3px); border-color: var(--gold); }
+  .slide-wrap img {
+    width: 100%; aspect-ratio: 1080 / 1350;
+    object-fit: cover; display: block;
+  }
+  .slide-meta {
+    padding: 14px 18px;
+    color: var(--muted); font-size: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .slide-meta .num { color: var(--gold); font-weight: 500; letter-spacing: 0.08em; }
+  .footer {
+    margin: 60px auto 0; max-width: 1800px;
+    padding-top: 28px; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 12px; text-align: center;
+  }
+  .footer .accent { color: var(--gold); }
+
+  /* Zoom overlay */
+  .zoom-overlay {
+    position: fixed; inset: 0; background: rgba(10,8,6,0.94);
+    display: none; align-items: center; justify-content: center; z-index: 1000;
+    padding: 40px;
+  }
+  .zoom-overlay.active { display: flex; }
+  .zoom-overlay img { max-width: 100%; max-height: 90vh; }
+  .zoom-close {
+    position: absolute; top: 24px; right: 28px;
+    background: none; border: none; color: var(--cream);
+    font-size: 32px; cursor: pointer; line-height: 1;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <h1>Métodos de Extração</h1>
+    <div style="color:var(--muted); font-size:13px; margin-top:4px;">Série Editorial · #20 · Parte II · com Convidado Exemplo</div>
+  </div>
+  <div class="meta">
+    <strong>7 slides</strong> · 1080×1350 · Cormorant + DM Sans · <a href="../" class="back-link">← voltar ao dashboard</a>
+    <button class="open-local" data-path="$HOME/Brands/acme/output/serie-editorial-20-parte-2/v1/slides">📁 Abrir pasta local</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<main class="grid">
+  <div class="slide-wrap" data-src="slides/slide-01.png"><img src="slides/slide-01.png" alt="Slide 1"><div class="slide-meta"><span class="num">01</span><span>Capa</span></div></div>
+  <div class="slide-wrap" data-src="slides/slide-02.png"><img src="slides/slide-02.png" alt="Slide 2"><div class="slide-meta"><span class="num">02</span><span>Hook · Citação de abertura</span></div></div>
+  <div class="slide-wrap" data-src="slides/slide-03.png"><img src="slides/slide-03.png" alt="Slide 3"><div class="slide-meta"><span class="num">03</span><span>Tensão · O problema</span></div></div>
+  <div class="slide-wrap" data-src="slides/slide-04.png"><img src="slides/slide-04.png" alt="Slide 4"><div class="slide-meta"><span class="num">04</span><span>Reposicionamento · A abordagem</span></div></div>
+  <div class="slide-wrap" data-src="slides/slide-05.png"><img src="slides/slide-05.png" alt="Slide 5"><div class="slide-meta"><span class="num">05</span><span>Evidência · Os 3 pilares</span></div></div>
+  <div class="slide-wrap" data-src="slides/slide-06.png"><img src="slides/slide-06.png" alt="Slide 6"><div class="slide-meta"><span class="num">06</span><span>Testemunho · Convidado</span></div></div>
+  <div class="slide-wrap" data-src="slides/slide-07.png"><img src="slides/slide-07.png" alt="Slide 7"><div class="slide-meta"><span class="num">07</span><span>CTA</span></div></div>
+</main>
+
+<div class="footer">
+  <span class="accent">Acme</span> · Acme Brand · Preview de carrossel · 2026
+</div>
+
+<div class="zoom-overlay" id="zoom">
+  <button class="zoom-close" id="closeZoom" aria-label="Fechar">×</button>
+  <img id="zoomImg" alt="">
+</div>
+
+<script>
+(function () {
+  var wraps = document.querySelectorAll('.slide-wrap');
+  var overlay = document.getElementById('zoom');
+  var img = document.getElementById('zoomImg');
+  var closeBtn = document.getElementById('closeZoom');
+  wraps.forEach(function (w) {
+    w.addEventListener('click', function () {
+      img.src = w.dataset.src;
+      overlay.classList.add('active');
+    });
+  });
+  closeBtn.addEventListener('click', function () { overlay.classList.remove('active'); });
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) overlay.classList.remove('active');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') overlay.classList.remove('active');
+  });
+
+  // "Abrir pasta local" — tenta file:// + copia path para clipboard
+  var toast = document.getElementById('toast');
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function () { toast.classList.remove('show'); }, 2800);
+  }
+  document.querySelectorAll('.open-local').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var path = btn.dataset.path;
+      // Copiar para clipboard (sempre)
+      navigator.clipboard.writeText(path).then(function () {
+        showToast('Path copiado · Cmd+Shift+G no Finder e cola');
+      }).catch(function () {
+        showToast('Path: ' + path);
+      });
+      // Tentar abrir file:// (funciona em Safari, bloqueado em Chrome/Arc)
+      try { window.open('file://' + path, '_blank'); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

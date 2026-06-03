@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ======================================================
+       ELEVENLABS STYLE — Whisper-thin premium
+       White canvas + warm undertones + light display + multi-layer shadows
+       Waldenburg substituído por Manrope weight 200/300
+       ====================================================== */
+    :root {
+      /* Manrope 200 substitui Waldenburg 300 — ambos são geometric humanist light */
+      --font-display: 'Manrope', -apple-system, system-ui, sans-serif;
+      --font-body: 'Inter', -apple-system, system-ui, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      /* Near-white canvas with warm undertones */
+      --bg: #FFFFFF;
+      --bg-alt: #F5F5F5;
+      --bg-warm: #F5F2EF;
+      --bg-warm-t: rgba(245, 242, 239, 0.8);
+
+      --ink: #000000;
+      --ink-2: #4E4E4E;
+      --ink-3: #777169;
+
+      --rule: #E5E5E5;
+      --rule-subtle: rgba(0, 0, 0, 0.05);
+
+      /* Multi-layer shadow system — sub-0.1 opacity */
+      --shadow-inset-edge: rgba(0, 0, 0, 0.075) 0px 0px 0px 0.5px inset, #fff 0px 0px 0px 0px inset;
+      --shadow-outline: rgba(0, 0, 0, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 1px 2px, rgba(0, 0, 0, 0.04) 0px 2px 4px;
+      --shadow-card: rgba(0, 0, 0, 0.4) 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 4px 4px;
+      --shadow-warm: rgba(78, 50, 23, 0.04) 0px 6px 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.6;
+      letter-spacing: 0.18px;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "ss01", "cv11";
+    }
+
+    ::selection { background: var(--ink); color: var(--bg); }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+    .container-sm { max-width: 760px; margin: 0 auto; padding: 0 32px; }
+
+    section { padding: 120px 0; }
+    @media (max-width: 720px) { section { padding: 80px 0; } }
+
+    /* ============ NAV ============ */
+    header.nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--rule-subtle);
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between; height: 68px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: var(--ink);
+      font-family: var(--font-display); font-weight: 500; font-size: 17px;
+      letter-spacing: -0.01em;
+    }
+    .logo-mark {
+      width: 28px; height: 28px; border-radius: 999px;
+      background: var(--bg-warm-t); box-shadow: var(--shadow-warm);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 600; font-size: 13px;
+    }
+    .nav-cta {
+      font-family: var(--font-body); font-weight: 500; font-size: 15px;
+      padding: 0 14px; height: 36px; line-height: 1.47;
+      display: inline-flex; align-items: center;
+      background: var(--ink); color: var(--bg);
+      border-radius: 9999px; text-decoration: none;
+    }
+
+    /* ============ TYPOGRAPHY — the whisper system ============ */
+    /* Display: Manrope 200 (substitui Waldenburg 300). Lightness IS the brand. */
+    .display {
+      font-family: var(--font-display);
+      font-weight: 200;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      color: var(--ink);
+    }
+    .display-hero { font-size: clamp(2.5rem, 5vw + 1rem, 5.5rem); }
+    .display-section { font-size: clamp(2rem, 2vw + 1.25rem, 3rem); line-height: 1.12; }
+    .display-card { font-size: clamp(1.375rem, 1vw + 1rem, 1.75rem); line-height: 1.2; }
+
+    /* Eyebrow — uppercase uppercase serif-ish */
+    .cta-upper {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 14px; text-transform: uppercase;
+      letter-spacing: 0.7px; line-height: 1.1;
+    }
+
+    .eyebrow {
+      font-family: var(--font-body); font-weight: 500;
+      font-size: 13px; color: var(--ink-3);
+      letter-spacing: 0.04em;
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 24px;
+    }
+    .eyebrow::before {
+      content: ''; width: 24px; height: 1px; background: var(--ink-3);
+    }
+
+    .lead {
+      font-family: var(--font-body); font-weight: 400;
+      font-size: 20px; line-height: 1.5;
+      letter-spacing: 0.18px;
+      color: var(--ink-2);
+    }
+
+    .body-text {
+      font-size: 18px; line-height: 1.6;
+      letter-spacing: 0.18px; color: var(--ink-2);
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      padding: 160px 0 120px;
+      text-align: center;
+    }
+    .hero .display { max-width: 900px; margin: 0 auto 32px; }
+    .hero .lead { max-width: 620px; margin: 0 auto 48px; }
+
+    /* ============ BUTTONS — pill signature ============ */
+    .pill-row { display: inline-flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+    .pill-primary {
+      display: inline-flex; align-items: center;
+      background: var(--ink); color: var(--bg);
+      padding: 0 20px; height: 44px; line-height: 1.47;
+      border-radius: 9999px; text-decoration: none;
+      font-family: var(--font-body); font-weight: 500; font-size: 15px;
+    }
+    .pill-white {
+      display: inline-flex; align-items: center;
+      background: var(--bg); color: var(--ink);
+      padding: 0 20px; height: 44px; line-height: 1.47;
+      border-radius: 9999px; text-decoration: none;
+      font-family: var(--font-body); font-weight: 500; font-size: 15px;
+      box-shadow: var(--shadow-card);
+    }
+    .pill-warm {
+      display: inline-flex; align-items: center;
+      background: var(--bg-warm-t); color: var(--ink);
+      padding: 12px 20px 12px 18px;
+      border-radius: 30px; text-decoration: none;
+      font-family: var(--font-body); font-weight: 500; font-size: 15px;
+      box-shadow: var(--shadow-warm);
+    }
+
+    /* ============ SECTIONS ============ */
+    .section-head { max-width: 720px; margin-bottom: 72px; }
+
+    /* ============ CARDS ============ */
+    .cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+    }
+    .card {
+      padding: 36px 32px 40px; background: var(--bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow-outline);
+    }
+    .card h3 { margin: 0 0 14px; }
+    .card p { margin: 0; font-size: 16px; letter-spacing: 0.16px; color: var(--ink-2); line-height: 1.55; }
+
+    /* ============ WARM BLOCK ============ */
+    .warm-block {
+      background: var(--bg-warm); border-radius: 24px;
+      padding: 64px 48px; text-align: center;
+      box-shadow: var(--shadow-inset-edge);
+    }
+    @media (max-width: 720px) { .warm-block { padding: 48px 28px; } }
+    .warm-block .display { margin: 0 auto 20px; max-width: 680px; }
+    .warm-block .lead { max-width: 560px; margin: 0 auto 36px; }
+
+    /* ============ STATS ROW ============ */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0; background: var(--bg); border-radius: 24px;
+      box-shadow: var(--shadow-outline); overflow: hidden;
+    }
+    .stat {
+      padding: 40px 32px; border-right: 1px solid var(--rule);
+      position: relative;
+    }
+    .stat:last-child { border-right: none; }
+    @media (max-width: 720px) {
+      .stat { border-right: none; border-bottom: 1px solid var(--rule); }
+      .stat:last-child { border-bottom: none; }
+    }
+    .stat-value {
+      font-family: var(--font-display); font-weight: 200;
+      font-size: 44px; letter-spacing: -0.02em;
+      line-height: 1; color: var(--ink); margin-bottom: 12px;
+    }
+    .stat-label {
+      font-family: var(--font-body); font-weight: 400;
+      font-size: 14px; letter-spacing: 0.14px;
+      color: var(--ink-2); line-height: 1.45;
+    }
+
+    /* ============ FLOW ============ */
+    .flow-pills {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+      padding: 32px;
+      background: var(--bg); border-radius: 20px;
+      box-shadow: var(--shadow-outline);
+    }
+    .flow-pill {
+      display: inline-flex; align-items: center;
+      padding: 10px 16px; background: var(--bg);
+      border-radius: 9999px;
+      box-shadow: var(--shadow-inset-edge);
+      font-size: 15px; font-weight: 500; color: var(--ink);
+      letter-spacing: 0.15px;
+    }
+    .flow-pill.final {
+      background: var(--bg-warm-t); box-shadow: var(--shadow-warm);
+    }
+    .flow-arrow {
+      font-family: var(--font-display); font-weight: 300;
+      color: var(--ink-3); font-size: 16px;
+    }
+
+    /* ============ STEPS — minimal list ============ */
+    .steps-list { list-style: none; padding: 0; margin: 0; }
+    .steps-list li {
+      display: grid; grid-template-columns: 60px 1fr auto;
+      gap: 24px; align-items: baseline;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--rule-subtle);
+    }
+    .steps-list li:last-child { border-bottom: none; }
+    @media (max-width: 640px) {
+      .steps-list li { grid-template-columns: 40px 1fr; }
+      .steps-list li > :last-child { grid-column: 2; }
+    }
+    .step-idx {
+      font-family: var(--font-display); font-weight: 200;
+      font-size: 28px; color: var(--ink-3);
+      letter-spacing: -0.02em;
+    }
+    .step-title {
+      font-family: var(--font-display); font-weight: 300;
+      font-size: 22px; color: var(--ink); margin: 0 0 6px;
+      letter-spacing: -0.01em; line-height: 1.2;
+    }
+    .step-desc {
+      font-size: 16px; color: var(--ink-2); line-height: 1.55;
+      letter-spacing: 0.16px; margin: 0; max-width: 560px;
+    }
+    .step-when {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--ink-3); white-space: nowrap;
+    }
+
+    /* ============ FOOTER ============ */
+    footer {
+      padding: 80px 0 60px;
+      border-top: 1px solid var(--rule-subtle);
+      text-align: center;
+    }
+    footer .mark {
+      font-family: var(--font-display); font-weight: 200;
+      font-size: 36px; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0 0 12px;
+    }
+    footer p {
+      margin: 4px 0; font-size: 14px; color: var(--ink-3);
+      letter-spacing: 0.14px;
+    }
+
+    /* ============ ANIMATIONS ============ */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; }
+    .reveal.in { animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark">{{LOGO_INITIAL}}</span>
+      <span>{{PROJECT}}</span>
+    </a>
+    <a href="#cta" class="nav-cta">{{NAV_CTA}}</a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="container">
+    <div class="reveal in">
+      <h1 class="display display-hero">{{HEADLINE}}</h1>
+      <p class="lead">{{LEAD}}</p>
+      <div class="pill-row">
+        <a href="#cta" class="pill-warm">{{CTA_PRIMARY}}</a>
+        <a href="#secondary" class="pill-white">{{CTA_SECONDARY}}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">{{EYEBROW_1}}</div>
+      <h2 class="display display-section">{{SECTION_1_TITLE}}</h2>
+      <p class="lead" style="margin-top: 20px;">{{SECTION_1_LEAD}}</p>
+    </div>
+
+    <div class="cards-grid reveal">
+      <div class="card">
+        <h3 class="display display-card">{{CARD_1_TITLE}}</h3>
+        <p>{{CARD_1_DESC}}</p>
+      </div>
+      <div class="card">
+        <h3 class="display display-card">{{CARD_2_TITLE}}</h3>
+        <p>{{CARD_2_DESC}}</p>
+      </div>
+      <div class="card">
+        <h3 class="display display-card">{{CARD_3_TITLE}}</h3>
+        <p>{{CARD_3_DESC}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background: var(--bg-alt);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">{{EYEBROW_2}}</div>
+      <h2 class="display display-section">{{SECTION_2_TITLE}}</h2>
+    </div>
+    <div class="stats-row reveal">
+      <div class="stat">
+        <div class="stat-value">{{STAT_1_VALUE}}</div>
+        <div class="stat-label">{{STAT_1_LABEL}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">{{STAT_2_VALUE}}</div>
+        <div class="stat-label">{{STAT_2_LABEL}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">{{STAT_3_VALUE}}</div>
+        <div class="stat-label">{{STAT_3_LABEL}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">{{STAT_4_VALUE}}</div>
+        <div class="stat-label">{{STAT_4_LABEL}}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">{{EYEBROW_3}}</div>
+      <h2 class="display display-section">{{SECTION_3_TITLE}}</h2>
+    </div>
+    <div class="flow-pills reveal">
+      <span class="flow-pill">{{FLOW_1}}</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-pill">{{FLOW_2}}</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-pill">{{FLOW_3}}</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-pill final">{{FLOW_FINAL}}</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-sm">
+    <div class="section-head reveal">
+      <div class="eyebrow">{{EYEBROW_4}}</div>
+      <h2 class="display display-section">{{SECTION_4_TITLE}}</h2>
+    </div>
+    <ol class="steps-list reveal">
+      <li>
+        <div class="step-idx">01</div>
+        <div>
+          <h3 class="step-title">{{STEP_1_TITLE}}</h3>
+          <p class="step-desc">{{STEP_1_DESC}}</p>
+        </div>
+        <div class="step-when">{{STEP_1_WHEN}}</div>
+      </li>
+      <li>
+        <div class="step-idx">02</div>
+        <div>
+          <h3 class="step-title">{{STEP_2_TITLE}}</h3>
+          <p class="step-desc">{{STEP_2_DESC}}</p>
+        </div>
+        <div class="step-when">{{STEP_2_WHEN}}</div>
+      </li>
+      <li>
+        <div class="step-idx">03</div>
+        <div>
+          <h3 class="step-title">{{STEP_3_TITLE}}</h3>
+          <p class="step-desc">{{STEP_3_DESC}}</p>
+        </div>
+        <div class="step-when">{{STEP_3_WHEN}}</div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="cta" style="padding-bottom: 160px;">
+  <div class="container-sm">
+    <div class="warm-block reveal">
+      <h2 class="display display-section">{{CTA_TITLE}}</h2>
+      <p class="lead">{{CTA_LEAD}}</p>
+      <div class="pill-row">
+        <a href="#" class="pill-primary">{{CTA_FINAL}}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container-sm">
+    <h3 class="mark">{{PROJECT}}</h3>
+    <p>{{FOOTER_TAGLINE}}</p>
+    <p>{{FOOTER_META}}</p>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '-40px 0px' });
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+</body>
+</html>

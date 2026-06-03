@@ -1,0 +1,455 @@
+<!--
+  MOTION LAYER — reusable micro-interactions for any one-pager template
+  =====================================================================
+
+  This file is NOT a complete template. It's a reference of snippets to
+  inject into one of the base templates (editorial, sonnet, claude, status,
+  newsprint, swiss, elevenlabs) when the user passes `--motion`.
+
+  All snippets are vanilla JS + modern CSS (no dependencies). They assume
+  the base template already defines tokens like --accent, --surface, --border.
+
+  ==== HOW TO APPLY ====
+
+  1. Copy MOTION_TOKENS_CSS into the base template's <style> :root block
+     (adds ease curves + @property declarations + --accent-glow).
+  2. Copy MOTION_UTILITIES_CSS into the <style> block (reveal, spotlight,
+     tilt, magnet, progress bar, cursor spot, marquee).
+  3. Right after <body>, inject MOTION_GLOBALS_HTML (scroll progress bar +
+     cursor spotlight element).
+  4. Add class="reveal" to section-heads and class="reveal-stagger" to grid
+     containers (.stats-grid, .features-grid, .steps, .problem-grid, etc).
+  5. Add data-spot to cards that should have radial cursor spotlight
+     (feat-card, stat-card, prob-card, biz-card).
+  6. Add data-magnet to hero CTA buttons that should have magnetic pull.
+  7. Split hero H1 into <span class="line">...</span> per visual line for
+     staggered rise-in effect.
+  8. On stat numbers, add data-count="300" data-prefix="~" data-suffix="%"
+     for animated counters (starts empty text, counts up on scroll into view).
+  9. Inject MOTION_SCRIPT right before </body>.
+  10. If the template uses pipeline-arrow, pipeline-step.highlight, status-chip
+      with ::before dot, they already get animation from the shared rules.
+-->
+
+
+<!-- ========================================================= -->
+<!-- MOTION_TOKENS_CSS — add to :root                           -->
+<!-- ========================================================= -->
+<style id="MOTION_TOKENS_CSS">
+  @property --grad-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+  @property --spot-x {
+    syntax: '<percentage>';
+    initial-value: 50%;
+    inherits: true;
+  }
+  @property --spot-y {
+    syntax: '<percentage>';
+    initial-value: 50%;
+    inherits: true;
+  }
+
+  :root {
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Derive if not already defined by base template. Adjust accent. */
+    --accent-glow: rgba(204, 120, 92, 0.35); /* match template --accent */
+    --shadow-hover: 0 24px 60px -18px rgba(0, 0, 0, 0.18), 0 0 0 1px var(--accent-muted, rgba(0,0,0,0.05));
+  }
+</style>
+
+
+<!-- ========================================================= -->
+<!-- MOTION_UTILITIES_CSS — add to main <style> block           -->
+<!-- ========================================================= -->
+<style id="MOTION_UTILITIES_CSS">
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; }
+
+  /* SCROLL PROGRESS BAR */
+  .scroll-progress {
+    position: fixed; top: 0; left: 0; right: 0; height: 2px;
+    background: transparent; z-index: 100; pointer-events: none;
+  }
+  .scroll-progress::after {
+    content: ''; display: block; height: 100%;
+    width: var(--scroll, 0%);
+    background: linear-gradient(90deg, var(--accent), var(--accent-deep, var(--accent)), var(--accent));
+    background-size: 200% 100%;
+    animation: motion-shimmer 3s linear infinite;
+    transition: width 0.05s linear;
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+  @keyframes motion-shimmer { 0% { background-position: 0 0; } 100% { background-position: -200% 0; } }
+
+  /* CURSOR SPOTLIGHT (desktop only) */
+  .cursor-spot {
+    position: fixed; pointer-events: none; z-index: 1;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+    transform: translate(-50%, -50%);
+    mix-blend-mode: multiply;
+    opacity: 0; transition: opacity 0.4s ease;
+    left: var(--cx, 50%); top: var(--cy, 50%);
+    will-change: transform;
+  }
+  @media (hover: hover) and (min-width: 900px) {
+    body:hover .cursor-spot { opacity: 0.35; }
+  }
+  /* For dark templates, swap blend-mode to screen */
+  [data-theme="dark"] .cursor-spot,
+  .theme-dark .cursor-spot { mix-blend-mode: screen; }
+
+  /* REVEAL on scroll */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-stagger > * {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+  }
+  .reveal-stagger.in > * { opacity: 1; transform: translateY(0); }
+  .reveal-stagger.in > *:nth-child(1) { transition-delay: 0.06s; }
+  .reveal-stagger.in > *:nth-child(2) { transition-delay: 0.12s; }
+  .reveal-stagger.in > *:nth-child(3) { transition-delay: 0.18s; }
+  .reveal-stagger.in > *:nth-child(4) { transition-delay: 0.24s; }
+  .reveal-stagger.in > *:nth-child(5) { transition-delay: 0.30s; }
+  .reveal-stagger.in > *:nth-child(6) { transition-delay: 0.36s; }
+  .reveal-stagger.in > *:nth-child(7) { transition-delay: 0.42s; }
+  .reveal-stagger.in > *:nth-child(8) { transition-delay: 0.48s; }
+  .reveal-stagger.in > *:nth-child(9) { transition-delay: 0.54s; }
+
+  /* SPOTLIGHT ON CARDS — add class or data-spot to cards */
+  [data-spot] { position: relative; overflow: hidden; }
+  [data-spot]::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(
+      380px circle at var(--spot-x) var(--spot-y),
+      var(--accent-subtle, var(--accent-muted, rgba(0,0,0,0.05))), transparent 55%
+    );
+    opacity: 0; transition: opacity 0.4s;
+    border-radius: inherit;
+  }
+  [data-spot]:hover::after { opacity: 1; }
+
+  /* 3D TILT — applied via JS to .feat-card, .stat-card, .tilt */
+
+  /* HERO TEXT — split into .line spans for staggered rise */
+  .hero h1 .line, h1.hero-lines .line {
+    display: block; opacity: 0;
+    transform: translateY(100%);
+    animation: motion-line-rise 1s var(--ease-out-expo) both;
+  }
+  .hero h1 .line:nth-child(1) { animation-delay: 0.25s; }
+  .hero h1 .line:nth-child(2) { animation-delay: 0.40s; }
+  .hero h1 .line:nth-child(3) { animation-delay: 0.55s; }
+  .hero h1 .line:nth-child(4) { animation-delay: 0.70s; }
+  @keyframes motion-line-rise { to { opacity: 1; transform: translateY(0); } }
+
+  /* Highlight sweep on accent spans inside hero h1 */
+  .hero h1 .accent-highlight, .hero h1 .sweep {
+    background-size: 0% 100%; background-repeat: no-repeat;
+    animation: motion-highlight-sweep 0.9s var(--ease-out-expo) 1.1s forwards;
+  }
+  @keyframes motion-highlight-sweep { to { background-size: 100% 100%; } }
+
+  /* Fade-in hero lead + marks after hero h1 */
+  .hero .lead, .hero .hero-marks {
+    opacity: 0; animation: motion-fade-in 0.9s var(--ease-out-expo) 0.75s forwards;
+  }
+  .hero .hero-marks { animation-delay: 0.9s; }
+  @keyframes motion-fade-in { to { opacity: 1; } }
+
+  /* Pipeline arrow — continuous rightward shift */
+  .pipeline-arrow, [data-arrow-shift] {
+    animation: motion-arrow-shift 2.4s ease-in-out infinite;
+  }
+  @keyframes motion-arrow-shift {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(4px); opacity: 1; }
+  }
+
+  /* MARQUEE band */
+  .marquee-band {
+    position: relative;
+    padding: 16px 0; overflow: hidden;
+    border-top: 1px solid var(--border-subtle, var(--border, rgba(0,0,0,0.08)));
+    border-bottom: 1px solid var(--border-subtle, var(--border, rgba(0,0,0,0.08)));
+    background: var(--bg-secondary, var(--surface-hover, #f5f5f0));
+    mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+  .marquee-track {
+    display: inline-flex; gap: 56px; white-space: nowrap;
+    animation: motion-marquee 30s linear infinite;
+    will-change: transform; padding-right: 56px;
+  }
+  @keyframes motion-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-item {
+    font-family: var(--font-mono, ui-monospace, monospace); font-size: 12.5px;
+    color: var(--text-muted, rgba(0,0,0,0.5));
+    display: inline-flex; align-items: center; gap: 14px;
+    letter-spacing: 0.03em;
+  }
+  .marquee-item .accent-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+  }
+
+  /* Magnetic hover — JS adds inline transform */
+  [data-magnet] {
+    transition: transform 0.3s var(--ease-out-expo), background 0.2s, color 0.2s, box-shadow 0.3s;
+    will-change: transform;
+  }
+
+  /* Line draw on eyebrow */
+  .eyebrow::before { transform-origin: left; animation: motion-line-draw 0.9s var(--ease-out-expo) 0.1s both; }
+  @keyframes motion-line-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* Ring pulse — add class="ring-pulse" or use on .biz-card .dot, nav status dots */
+  .ring-pulse {
+    box-shadow: 0 0 0 4px var(--accent-muted, rgba(204,120,92,0.1));
+    animation: motion-ring-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes motion-ring-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px var(--accent-muted, rgba(204,120,92,0.1)); }
+    50% { box-shadow: 0 0 0 8px transparent; }
+  }
+
+  /* Conic spinning border — add class="conic-ring" wrapping */
+  .conic-ring {
+    position: relative;
+    background: conic-gradient(from var(--grad-angle), var(--accent), var(--accent-deep, var(--accent)), var(--accent));
+    animation: motion-spin 6s linear infinite;
+  }
+  @keyframes motion-spin { to { --grad-angle: 360deg; } }
+
+  /* Shimmer divider line (footer, section separators) */
+  .shimmer-line {
+    position: relative;
+  }
+  .shimmer-line::before {
+    content: ''; position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation: motion-shimmer-line 4s ease-in-out infinite;
+  }
+  @keyframes motion-shimmer-line {
+    0%, 100% { opacity: 0.4; width: 60px; }
+    50% { opacity: 1; width: 120px; }
+  }
+
+  /* Bullet hover ripple */
+  .bullets li { transition: transform 0.3s var(--ease-out-expo), color 0.3s; }
+  .bullets li:hover { color: var(--text-primary); transform: translateX(4px); }
+  .bullets li::before { transition: box-shadow 0.3s, transform 0.3s; }
+  .bullets li:hover::before { box-shadow: 0 0 10px var(--accent-glow); transform: scale(1.3); }
+
+  /* Hover lift + spring icon on feat/stat cards */
+  .feat-card, .stat-card, .prob-card, .biz-card {
+    transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+  }
+  .feat-card:hover, .stat-card:hover, .biz-card:hover { box-shadow: var(--shadow-hover); }
+  .feat-icon, .stat-icon {
+    display: inline-block; transition: transform 0.6s var(--ease-spring);
+  }
+  .feat-card:hover .feat-icon, .stat-card:hover .stat-icon {
+    transform: scale(1.18) rotate(-6deg);
+  }
+
+  /* Reduce motion fallback (always last) */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+  }
+</style>
+
+
+<!-- ========================================================= -->
+<!-- MOTION_GLOBALS_HTML — inject right after opening <body>    -->
+<!-- ========================================================= -->
+<div class="scroll-progress"></div>
+<div class="cursor-spot"></div>
+
+
+<!-- ========================================================= -->
+<!-- MOTION_HERO_SNIPPET — how to structure hero h1 for reveal  -->
+<!-- ========================================================= -->
+<!--
+  Wrap each visual line of the hero H1 in <span class="line">...</span>.
+  Wrap accent words in <span class="accent-highlight"> for sweep.
+
+  <h1 class="h1">
+    <span class="line">A ponte inteligente</span>
+    <span class="line">entre marcas</span>
+    <span class="line">e <span class="accent-highlight">jornalistas</span>.</span>
+  </h1>
+-->
+
+
+<!-- ========================================================= -->
+<!-- MOTION_COUNTER_SNIPPET — animated stat numbers             -->
+<!-- ========================================================= -->
+<!--
+  Add data-count + optional data-prefix / data-suffix.
+  Initial text content is ignored — the script writes prefix + 0 + suffix
+  then counts to data-count using easeOutQuart over 1400ms when IO hits.
+
+  <div class="stat-num" data-count="300" data-prefix="~">~0</div>
+  <div class="stat-num" data-count="50" data-prefix="≫" data-suffix="%">≫0%</div>
+  <div class="stat-num" data-count="3" data-suffix=" sem.">0 sem.</div>
+-->
+
+
+<!-- ========================================================= -->
+<!-- MOTION_MARQUEE_SNIPPET — duplicated for seamless loop      -->
+<!-- ========================================================= -->
+<!--
+  Inject between hero and first section. Duplicate items so the 50%
+  keyframe lands on an identical visual state (seamless loop).
+
+  <div class="marquee-band">
+    <div class="marquee-track">
+      <span class="marquee-item">📨 fact 1</span>
+      <span class="marquee-item"><span class="accent-dot"></span> fact 2</span>
+      <span class="marquee-item">🗑️ fact 3</span>
+      ...repeat 6-8 items...
+      <!-- duplicate the whole sequence for seamless loop -->
+      <span class="marquee-item">📨 fact 1</span>
+      ...same items again...
+    </div>
+  </div>
+-->
+
+
+<!-- ========================================================= -->
+<!-- MOTION_SCRIPT — inject right before closing </body>        -->
+<!-- ========================================================= -->
+<script id="MOTION_SCRIPT">
+(() => {
+  'use strict';
+
+  // --- SCROLL PROGRESS ---
+  const progress = document.querySelector('.scroll-progress');
+  if (progress) {
+    let rafScroll;
+    const updateScroll = () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      progress.style.setProperty('--scroll', pct + '%');
+      rafScroll = null;
+    };
+    window.addEventListener('scroll', () => {
+      if (!rafScroll) rafScroll = requestAnimationFrame(updateScroll);
+    }, { passive: true });
+  }
+
+  // --- CURSOR SPOTLIGHT (desktop only) ---
+  const spot = document.querySelector('.cursor-spot');
+  if (spot && window.matchMedia('(hover: hover) and (min-width: 900px)').matches) {
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    document.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+    const loop = () => {
+      cx += (tx - cx) * 0.12;
+      cy += (ty - cy) * 0.12;
+      spot.style.setProperty('--cx', cx + 'px');
+      spot.style.setProperty('--cy', cy + 'px');
+      requestAnimationFrame(loop);
+    };
+    loop();
+  }
+
+  // --- SPOTLIGHT ON CARDS (radial follow cursor) ---
+  document.querySelectorAll('[data-spot]').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      el.style.setProperty('--spot-x', x + '%');
+      el.style.setProperty('--spot-y', y + '%');
+    });
+  });
+
+  // --- MAGNETIC BUTTONS ---
+  document.querySelectorAll('[data-magnet]').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) * 0.25;
+      const dy = (e.clientY - (r.top + r.height / 2)) * 0.25;
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
+
+  // --- 3D TILT on feature cards ---
+  document.querySelectorAll('.feat-card, .stat-card, .tilt').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      const rx = py * -6;
+      const ry = px * 6;
+      el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+    });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
+
+  // --- REVEAL on scroll ---
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+  // --- COUNTER ANIMATION on [data-count] ---
+  const counterIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.count);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const duration = 1400;
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 4);
+        const val = Math.round(target * ease);
+        el.textContent = prefix + val + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      counterIO.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-count]').forEach(el => counterIO.observe(el));
+
+  // --- Smooth anchor scroll with offset for sticky nav ---
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const t = document.querySelector(id);
+      if (!t) return;
+      e.preventDefault();
+      const top = t.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
