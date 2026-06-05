@@ -29,7 +29,7 @@ Supported formats: `.jpg`, `.jpeg`, `.png`, `.heic`, `.heif`, `.tiff`, `.tif`, `
 ### 2. Ask the user for preferences (if not already provided)
 
 - **Source folder**: where the original images are
-- **Naming prefix**: e.g., `fotos-joana-ferreira` → produces `fotos-joana-ferreira-1.jpg`, `fotos-joana-ferreira-2.jpg`, etc.
+- **Naming prefix**: e.g., `project-photos` → produces `project-photos-1.jpg`, `project-photos-2.jpg`, etc.
 - **Starting number**: default is 1, but if the user already has photos numbered 1-22, start at 23
 
 ### 3. Create output folder
@@ -70,8 +70,8 @@ After processing, display a summary table:
 
 ```
 Original Name              → New Name                    Size    Reduction
-Cópia de IMG_8242.jpg      → fotos-joana-ferreira-1.jpg  285KB   -99%
-IMG_5660.HEIC              → fotos-joana-ferreira-2.jpg  198KB   -87%
+IMG_8242.jpg               → project-photos-1.jpg   285KB   -72%
+IMG_5660.HEIC              → project-photos-2.jpg   198KB   -87%
 ...
 ```
 

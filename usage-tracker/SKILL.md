@@ -137,7 +137,7 @@ Output a rich visual dashboard using Unicode block characters. This is the criti
 
   EXTRA USAGE
   Spent  [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 0%
-  Budget: €0.00 / €24.00               Balance: €0.00
+  Budget: €0.00 / €XX.XX               Balance: €0.00
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

@@ -55,10 +55,10 @@ Mostrar a lista numerada e perguntar se está completa, se há algo a remover, o
 ### 3. Capturar evidência
 
 **Para UI (sidebar, formulários, páginas com login):**
-Usar Playwright + login via Supabase Auth. Script template em `~/.claude/skills/proof/capture-ui.mjs` (copiar para `/tmp/<projecto>-proof/` e adaptar).
+Usar Playwright + login via autenticação do projecto. Script template em `capture-ui.mjs` (na pasta deste skill — copiar para `/tmp/<projecto>-proof/` e adaptar).
 
 **Para PDFs (capas, rodapés, layout):**
-Usar o endpoint admin (`/api/admin/users/[id]/preview-pdf/[type]`) que regenera o PDF fresco. Login como admin, ir buscar o cookie SSR, fetch para `/tmp/<projecto>-pdf/<fase>.pdf`. Renderizar página com `pdftoppm -r 150 -f N -l N <pdf> <prefix>` (página 1 = capa, página 2+ = miolo/rodapé).
+Usar o endpoint do projecto que regenera o PDF fresco. Login como admin, ir buscar o cookie SSR, fetch para `/tmp/<projecto>-pdf/<fase>.pdf`. Renderizar página com `pdftoppm -r 150 -f N -l N <pdf> <prefix>` (página 1 = capa, página 2+ = miolo/rodapé).
 
 Para rodapés/cropes específicos, usar PIL para cortar:
 ```python
@@ -70,8 +70,8 @@ crop = img.crop((0, h - 90, w, h)); crop.save("footer-only.png")
 
 Os dois modos partilham a **mesma estrutura `ITEMS`**, por isso preenche-a uma vez e escolhe o script no passo 5.
 
-- Modo HTML (default): copiar `~/.claude/skills/proof/build-html.py` para `/tmp/<projecto>-proof/build-html.py`.
-- Modo PIL: copiar `~/.claude/skills/proof/add-captions.py` para `/tmp/<projecto>-proof/add-captions.py`.
+- Modo HTML (default): copiar `build-html.py` (na pasta deste skill) para `/tmp/<projecto>-proof/build-html.py`.
+- Modo PIL: copiar `add-captions.py` (na pasta deste skill) para `/tmp/<projecto>-proof/add-captions.py`.
 
 No topo do script editar `SRC`, `DEST` (e, no HTML, `PROJECT_TITLE`/`PROJECT_DATE`) e a lista `ITEMS`:
 
@@ -127,7 +127,7 @@ Desenha markers (badge + seta) nas coords originais, pad imagens estreitas (<900
 
 - `build-html.py` — gera a página HTML (default); mesma estrutura `ITEMS`. O favicon (lupa+check teal) está embebido como data-URI base64 (`FAVICON_B64`), por isso o `index.html` é auto-contido mesmo copiado para `/tmp`.
 - `add-captions.py` — modo PIL: PNGs com legenda + markers embebidos
-- `icon-512.png` / `apple-touch-icon.png` / `favicon-32.png` / `favicon-16.png` / `favicon.ico` — assets do ícone (gerados via Higgsfield). Reutilizáveis se precisares do ícone fora da página.
+- `icon-512.png` / `apple-touch-icon.png` / `favicon-32.png` / `favicon-16.png` / `favicon.ico` — assets do ícone. Reutilizáveis se precisares do ícone fora da página.
 - `capture-ui.mjs` — script Playwright com login Supabase + screenshot helpers
 - `auth-helper.sh` — helper bash para login Supabase + criação de cookie SSR
 
